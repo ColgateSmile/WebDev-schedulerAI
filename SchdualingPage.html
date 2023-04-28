@@ -79,8 +79,9 @@
                             <th scope="col">#</th>
                             <th scope="col">Assignment Name</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Due Date</th>
-                            <th scope="col"></th>
+							<th scope="col">Due Date</th>
+							
+							<th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,32 +145,32 @@
                 $("#assignment-name").val("");
                 $("#assignment-description").val("");
                 $("#due-date").val("");
-				});
+            });
 
-				// Minimize button click event
-				$("#minimize-btn").click(function() {
-					$(".add-task-section").slideUp();
-					$(".toggle-section").html("<button type='button' class='btn btn-primary' id='Add_Assignment-btn'>Add Assignment</button>");
-				});
+            // Minimize button click event
+            $("#minimize-btn").click(function() {
+                $(".add-task-section").slideUp();
+                $(".toggle-section").html("<button type='button' class='btn btn-primary' id='Add_Assignment-btn'>Add Assignment</button>");
+            });
 
-				// Revert button click event
-				$(document).on("click", "#Add_Assignment-btn", function() {
-					$(".add-task-section").slideDown();
-					$(".toggle-section").empty(); // Remove existing buttons
-				});
+            // Revert button click event
+            $(document).on("click", "#Add_Assignment-btn", function() {
+                $(".add-task-section").slideDown();
+                $(".toggle-section").empty(); // Remove existing buttons
+            });
 
-				// Delete button click event
-				$(document).on("click", ".delete-btn", function() {
-					$(this).closest("tr").remove();
-					updateRowNumbers();
-				});
+            // Delete button click event
+            $(document).on("click", ".delete-btn", function() {
+                $(this).closest("tr").remove();
+                updateRowNumbers();
+            });
 
-				// Function to update row numbers
-				function updateRowNumbers() {
-					$("tbody tr").each(function(index) {
-						$(this).find("th").text(index + 1);
-					});
-				}
+            // Function to update row numbers
+            function updateRowNumbers() {
+                $("tbody tr").each(function(index) {
+                    $(this).find("th").text(index + 1);
+                });
+            }
         });
     </script>
 </body>
