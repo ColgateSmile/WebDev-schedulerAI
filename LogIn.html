@@ -8,20 +8,17 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<!-- Custom CSS -->
 	<link rel="stylesheet" type="text/css" href="style.css">
-
-
-
 </head>
 <body>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="login-container">				
+				<div class="login-container">
 					<h1>Login SchedulerAI</h1>
-					<form method="post" action="login.php">
+					<form method="post" action="#" onsubmit="validateLogin(event)">
 						<div class="form-group">
-							<label for="username">e-mail</label>
-							<input type="text" class="form-control" id="e-mail" name="e-mail" placeholder="Enter e-mail">
+							<label for="email">E-mail</label>
+							<input type="text" class="form-control" id="email" name="email" placeholder="Enter e-mail">
 						</div>
 						<div class="form-group">
 							<label for="password">Password</label>
@@ -32,11 +29,8 @@
 							<button type="button" class="btn btn-link">Forgot password?</button>
 							<button type="button" class="btn btn-link">Sign up</button>
 						</div>
-						<div id="g_id_onload"
-           data-client_id="YOUR_CLIENT_ID"
-           data-callback="handleCredentialResponse">
-        </div>
-        <div class="g_id_signin" data-type="standard"></div>
+						<div id="g_id_onload" data-client_id="YOUR_CLIENT_ID" data-callback="handleCredentialResponse"></div>
+						<div class="g_id_signin" data-type="standard"></div>
 					</form>
 				</div>
 			</div>
@@ -48,18 +42,39 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
 	<script src="https://accounts.google.com/gsi/client" async defer></script>
 	<script>
-		function handleCredentialResponse(response) {
-			// Handle the response from the Google Sign-In API
-			console.log(response.credential);
-		}
+    function handleCredentialResponse(response) {
+        // Handle the response from the Google Sign-In API
+        console.log(response.credential);
+    }
 
-		google.accounts.id.initialize({
-			client_id: 'YOUR_CLIENT_ID',
-			callback: handleCredentialResponse
-		});
+    google.accounts.id.initialize({
+        client_id: 'YOUR_CLIENT_ID',
+        callback: handleCredentialResponse
+    });
 
-		google.accounts.id.prompt();
+    google.accounts.id.prompt();
 
-	</script>
+    function validateLogin(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get the entered email and password
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Perform validation or API call to check if user exists in the database
+        // Replace this with your own validation logic
+
+        // Simulating validation success for demonstration purposes
+        const isAdmin = (email.toLowerCase() === 'admin' && password === 'admin');
+
+        if (isAdmin) {
+            // Redirect to the admin page
+            window.location.href = 'index.html';
+        } else {
+            // Display an error message or perform any necessary action
+            alert('Invalid email or password. Please try again.');
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scheduler</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <style type="text/css">
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Scheduler</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-login_uri="YOUR_LOGIN_URI" data-auto_prompt="false"></div>
+                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container">
+        <h1 class="text-center">Assignment List</h1>
+        <form>
+            <div class="form-group">
+                <label for="assignment-name">Assignment Name:</label>
+                <input type="text" class="form-control" id="assignment-name">
+            </div>
+            <div class="form-group">
+                <label for="due-date">Due Date:</label>
+                <input type="date" class="form-control" id="due-date">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Assignment</button>
+        </form>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Assignment Name</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Assignment 1</td>
+                    <td>2023-05-01</td>
+                    <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Assignment 2</td>
+                    <td>2023-05-03</td>
+                    <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Assignment 3</td>
+                    <td>2023-05-05</td>
+                    <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+                </tr>
+                <!-- Add more assignment rows here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6h1ta5dn7yl/2+v0abTuDh0m0m6dHQFjC2zFg0Jq5Z5CmK7bc" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6Vo+D6clDnjf4M6Aj4gx5Pi+sf4+JbB" crossorigin="anonymous"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        // Handle the form submission to add a new assignment
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+            var assignmentName = document.getElementById('assignment-name').value;
+            var dueDate = document.getElementById('due-date').value;
+
+            // Validate the input values
+
+            // Add the new assignment to the table
+            var tableBody = document.querySelector('table tbody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <th scope="row">${tableBody.children.length + 1}</th>
+                <td>${assignmentName}</td>
+                <td>${dueDate}</td>
+                <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Clear the input fields
+            document.getElementById('assignment-name').value = '';
+            document.getElementById('due-date').value = '';
+
+            // Attach the event listener for the delete button
+            newRow.querySelector('.delete-btn').addEventListener('click', function () {
+                newRow.remove();
+            });
+        });
+
+        // Attach the event listeners for the existing delete buttons
+        var deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var row = button.closest('tr');
+                row.remove();
+            });
+        });
+    </script>
+</body>
+</html>
+
