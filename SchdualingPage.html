@@ -6,10 +6,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
     <!-- Custom CSS -->
     <style type="text/css">
         .container {
             margin-top: 50px;
+        }
+        
+        .add-task-section button {
+            margin-right: 40px;
         }
     </style>
 </head>
@@ -40,26 +46,31 @@
     <div class="container">
         <div class="card mb-3">
             <div class="card-body">
-                <h1 class="card-title text-center">Assignment List</h1>
-                <form>
-                    <div class="form-group">
-                        <label for="assignment-name">Assignment Name:</label>
-                        <input type="text" class="form-control" id="assignment-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="assignment-description">Description:</label>
-                        <textarea class="form-control" id="assignment-description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="due-date">Due Date:</label>
-                        <input type="date" class="form-control" id="due-date">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Assignment</button>
-                    <button type="button" class="btn btn-success" id="save-btn">Save Assignments</button>
-                </form>
+                <h1 class="card-title text-center">Add Assignment To your List</h1>
+                <div class="add-task-section">
+                    <form>
+                        <div class="form-group">
+                            <label for="assignment-name">Assignment Name:</label>
+                            <input type="text" class="form-control" id="assignment-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="assignment-description">Description:</label>
+                            <textarea class="form-control" id="assignment-description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="due-date">Due Date:</label>
+                            <input type="date" class="form-control" id="due-date">
+                        </div>
+                        <button type="button" class="btn btn-success" id="save-btn">Save Assignments</button>
+                        <button type="submit" class="btn btn-primary">Add Assignment</button>
+                        <button type="button" class="btn btn-primary" id="minimize-btn">Minimize</button>
+                    </form>
+                </div>
+                <div class="toggle-section">
+                </div>
             </div>
         </div>
-        
+
         <div class="card">
             <div class="card-body">
                 <table class="table">
@@ -78,125 +89,88 @@
                             <td>Assignment 1</td>
                             <td>Description 1</td>
                             <td>2023-05-05</td>
-                            <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt
-                                "></i></button></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Assignment 2</td>
-                                <td>Description 2</td>
-                                <td>2023-05-05</td>
-                                <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt"></i></button></td>
-                            </tr>
-                            <!-- Add more assignment rows here -->
-                        </tbody>
-                    </table>
-                </div>
+                            <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt"></i></button></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Assignment 2</td>
+                            <td>Description 2</td>
+                            <td>2023-05-05</td>
+                            <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt"></i></button></td>
+                        </tr>
+                        <!-- Add more assignment rows here -->
+                    </tbody>
+                </table>
             </div>
         </div>
-    
-        <!-- Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6h1ta5dn7yl/2+v0abTuDh0m0m6dHQFjC2zFg0Jq5Z5CmK7bc"
-            crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6Vo+D6clDnjf4M6Aj4gx5Pi+sf4+JbB"
-            crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
-        <script>
-            $(document).ready(function() {
-                // Add assignment form submission
-                $("form").submit(function(event) {
-                    event.preventDefault();
-    
-                    // Get form values
-                    var assignmentName = $("#assignment-name").val();
-                    var assignmentDescription = $("#assignment-description").val();
-                    var dueDate = $("#due-date").val();
-    
-                    // Validate form inputs
-                    if (assignmentName === "" || assignmentDescription === "" || dueDate === "") {
-                        alert("Please enter all the fields.");
-                        return;
-                    }
-    
-                    // Add new row to the table
-                    var newRow = $("<tr>");
-                    newRow.append("<th scope='row'>" + ($("tbody tr").length + 1) + "</th>");
-                    newRow.append("<td>" + assignmentName + "</td>");
-                    newRow.append("<td>" + assignmentDescription + "</td>");
-                    newRow.append("<td>" + dueDate + "</td>");
-                    newRow.append("<td><button type='button' class='btn btn-danger btn-sm delete-btn'><i class='fas fa-trash-alt'></i></button></td>");
-                    $("tbody").append(newRow);
-    
-                    // Clear form inputs
-                    $("#assignment-name").val("");
-                    $("#assignment-description").val("");
-                    $("#due-date").val("");
-    
-                    // Update row numbers
-                    updateRowNumbers();
-                });
-    
-                // Remove assignment when delete button is clicked
-                $(document).on("click", ".delete-btn", function() {
-                    $(this).closest("tr").remove();
-                    // Update row numbers
-                    updateRowNumbers
-                    // Update row numbers
-                    updateRowNumbers();
-            });
+    </div>
 
-            // Remove assignment when delete button is clicked
-            $(document).on("click", ".delete-btn", function() {
-                $(this).closest("tr").remove();
-                // Update row numbers
-                updateRowNumbers();
-            });
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6h1ta5dn7yl/2+v0abTuDh0m0m6dHQFjC2zFg0Jq5Z5CmK7bc"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6Vo+D6clDnjf4M6Aj4gx5Pi+sf4+JbB"
+        crossorigin="anonymous"></script>
 
-            // Save assignments when save button is clicked
-            $("#save-btn").click(function() {
-                // Get all assignment rows
-                var assignmentRows = $("tbody tr");
+    <script>
+        $(document).ready(function() {
+            // Add assignment form submission
+            $("form").submit(function(event) {
+                event.preventDefault();
 
-                // Create an array to store the assignments
-                var assignments = [];
+                // Get form values
+                var assignmentName = $("#assignment-name").val();
+                var assignmentDescription = $("#assignment-description").val();
+                var dueDate = $("#due-date").val();
 
-                // Loop through each assignment row and extract the data
-                assignmentRows.each(function() {
-                    var assignment = {
-                        name: $(this).find("td:eq(1)").text(),
-                        description: $(this).find("td:eq(2)").text(),
-                        dueDate: $(this).find("td:eq(3)").text()
-                    };
+                // Validate form inputs
+                if (assignmentName === "" || assignmentDescription === "" || dueDate === "") {
+                    alert("Please enter all the fields.");
+                    return;
+                }
 
-                    assignments.push(assignment);
-                });
+                // Add new row to the table
+                var newRow = $("<tr>");
+                newRow.append("<th scope='row'>" + ($("tbody tr").length + 1) + "</th>");
+                newRow.append("<td>" + assignmentName + "</td>");
+                newRow.append("<td>" + assignmentDescription + "</td>");
+                newRow.append("<td>" + dueDate + "</td>");
+                newRow.append("<td><button type='button' class='btn btn-danger btn-sm delete-btn'><i class='fas fa-trash-alt'></i></button></td>");
+                $("tbody").append(newRow);
 
-                // Perform your save logic here
-                // You can send the assignments array to your server or store it locally
+                // Clear form inputs
+                $("#assignment-name").val("");
+                $("#assignment-description").val("");
+                $("#due-date").val("");
+				});
 
-                // Display a success message
-                alert("Assignments saved successfully!");
-            });
+				// Minimize button click event
+				$("#minimize-btn").click(function() {
+					$(".add-task-section").slideUp();
+					$(".toggle-section").html("<button type='button' class='btn btn-primary' id='Add_Assignment-btn'>Add Assignment</button>");
+				});
 
-            // Function to update the row numbers in the table
-            function updateRowNumbers() {
-                // Get all rows in the table body
-                var rows = $("tbody tr");
+				// Revert button click event
+				$(document).on("click", "#Add_Assignment-btn", function() {
+					$(".add-task-section").slideDown();
+					$(".toggle-section").empty(); // Remove existing buttons
+				});
 
-                // Update the row numbers
-                rows.each(function(index) {
-                    $(this).find("th").text(index + 1);
-                });
-            }
+				// Delete button click event
+				$(document).on("click", ".delete-btn", function() {
+					$(this).closest("tr").remove();
+					updateRowNumbers();
+				});
+
+				// Function to update row numbers
+				function updateRowNumbers() {
+					$("tbody tr").each(function(index) {
+						$(this).find("th").text(index + 1);
+					});
+				}
         });
     </script>
-
 </body>
 </html>
