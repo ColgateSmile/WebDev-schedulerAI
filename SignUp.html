@@ -8,15 +8,17 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<!-- Custom CSS -->
 	<link rel="stylesheet" type="text/css" href="style.css">
-
-
+	<link rel="stylesheet" type="text/css" href="custom-styles.css"> <!-- Added the CSS file -->
 </head>
 <body>
+	<div class="header">
+		<h5>Sign Up for SchedulerAI</h5>
+	</div>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="signup-container">
-					<h1>Sign Up for SchedulerAI</h1>
 					<form method="post" action="#" onsubmit="saveFields(event)">
 						<div class="form-group">
 							<label for="first-name">First Name</label>
@@ -32,59 +34,66 @@
 						</div>
 						<div class="form-group">
 							<label for="password">Password <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="" data-original-title="Password must be at least 10 characters long and contain at least one number, one letter, and one symbol (!@#$%^&*)"></i></label>
-							<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required oninput="checkPasswordStrength(this.value)">
-							<div id="password-strength-indicator"></div>
-							<div id="password-strength-label"></div>
+							<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
 						</div>
+						<div id="password-strength-indicator"></div>
+						<div id="password-strength-label"></div>
 						<button type="submit" class="btn btn-primary">Sign Up</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mg
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
-	<script>
-		$(document).ready(function() {
-			// Initialize tooltips
-			$('[data-toggle="tooltip"]').tooltip();
-		});
-		
-		// Save the values in variables or perform any desired operations
-		function saveFields(event) {
-			event.preventDefault(); // Prevent the form from submitting and page refresh
 
-			// Get form field values
-			var firstName = document.getElementById('first-name').value;
-			var lastName = document.getElementById('last-name').value;
-			var email = document.getElementById('email').value;
-			var password = document.getElementById('password').value;
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="container">
+			<p>&copy; 2023 SchedulerAI</p>
+		</div>
+	</footer>
 
+			<!-- Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mg..."></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
+		<script>
+			// Save the values in variables or perform any desired operations
+	function saveFields(event) {
+		event.preventDefault(); // Prevent the form from submitting and page refresh
 
-			// Redirect to the homepage
-			window.location.href = 'index.html';
+		// Get form field values
+		var firstName = document.getElementById('first-name').value;
+		var lastName = document.getElementById('last-name').value;
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+
+		// Perform validation or API call to save the user data
+		// Replace this with your own validation logic and data saving logic
+
+		// Redirect to the homepage or display a success message
+		window.location.href = 'index.html';
+	}
+
+	function checkPasswordStrength(password) {
+		var indicator = document.getElementById('password-strength-indicator');
+		var label = document.getElementById('password-strength-label');
+
+		// Reset the indicator
+		indicator.className = 'password-strength-indicator';
+
+		// Evaluate password strength
+		if (password.length < 7 || !/\d/.test(password) || !/[a-zA-Z]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+			indicator.classList.add('password-weak');
+			label.textContent = 'Weak Password';
+			label.style.color = 'red';
+		} else {
+			indicator.classList.add('password-strong');
+			label.textContent = 'Strong Password';
+			label.style.color = 'green';
 		}
+	}
+</script>
 
-		function checkPasswordStrength(password) {
-			var indicator = document.getElementById('password-strength-indicator');
-			var label = document.getElementById('password-strength-label');
-
-			// Reset the indicator
-			indicator.className = 'password-strength-indicator';
-
-			// Evaluate password strength
-			if (password.length < 10 || !/\d/.test(password) || !/[a-zA-Z]/.test(password) || !/[!@#$%^&*]/.test(password)) {
-				indicator.classList.add('password-weak');
-				label.textContent = 'Weak Password';
-				label.style.color = 'red';
-			} else {
-				indicator.classList.add('password-strong');
-				label.textContent = 'Strong Password';
-				label.style.color = 'green';
-			}
-		}
-	</script>
 </body>
+
 </html>
