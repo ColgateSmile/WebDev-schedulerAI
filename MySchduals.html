@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Schedules</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxx" crossorigin="anonymous">
+
+</head>
+<body>
+    <!-- Header -->
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Scheduler</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="MySchduals.html">My schduals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="LogIn.html">LogOut</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 mx-auto">
+				<h1>My Schedules</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>List Name</th>
+							<th>Creation Date</th>
+							<th>Permitted Users</th>
+						</tr>
+					</thead>
+					<tbody>
+                        <!-- Replace the example data with your actual data retrieved from SchedulingPage.html -->
+                        <tr>
+                            <td>List 1</td>
+                            <td>2023-05-04</td>
+                            <td>User 1, User 2, User 3</td>
+                            <td>
+                                <button type="button" class="btn btn-success mr-6">Edit List</button>
+                                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>List 2</td>
+                            <td>2023-05-05</td>
+                            <td>User 4, User 5</td>
+                            <td>
+                                <button type="button" class="btn btn-success mr-6">Edit List</button>
+                                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>List 3</td>
+                            <td>2023-05-06</td>
+                            <td>User 6</td>
+                            <td>
+                                <button type="button" class="btn btn-success mr-6">Edit List</button>
+                                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <!-- End of example data -->
+                    </tbody>
+                    
+				</table>
+			</div>
+		</div>
+	</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2023 SchedulerAI</p>
+                </div>
+                <div class="col-md-6 text-bottom">
+                    <p id="datetime"></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+	<!-- Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6
