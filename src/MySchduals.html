@@ -85,54 +85,7 @@
       </div>
     </div>
   </div>
-
-
-
-  
-  <script>
-    function addSchedule() {
-      // Create a new row
-      const newRow = document.createElement("tr");
-
-      // Add columns for list name, creation date, and permitted users
-      const listName = document.createElement("td");
-      listName.innerText = document.getElementById("scheduleName").value || "New Schedule";
-      newRow.appendChild(listName);
-
-      	const creationDate = document.createElement("td");
-		creationDate.innerText = new Date().toLocaleDateString();
-		newRow.appendChild(creationDate);
-		const permittedUsers = document.createElement("td");
-		permittedUsers.innerText = document.getElementById("permittedUsers").value || "User 1, User 2";
-		newRow.appendChild(permittedUsers);
-
-		// Add a delete button
-		const deleteButton = document.createElement("button");
-		deleteButton.classList.add("btn", "btn-danger");
-		deleteButton.innerText = "Delete";
-		deleteButton.addEventListener("click", deleteSchedule);
-		const buttonCell = document.createElement("td");
-		buttonCell.appendChild(deleteButton);
-		newRow.appendChild(buttonCell);
-
-		// Add the new row to the table
-		const table = document.getElementById("schedule-table");
-		table.appendChild(newRow);
-
-		// Hide the modal
-		const modal = document.getElementById("addScheduleModal");
-		modal.classList.remove("show");
-		modal.style.display = "none";
-		const modalBackdrop = document.getElementsByClassName("modal-backdrop")[0];
-		modalBackdrop.parentNode.removeChild(modalBackdrop);
-		}
-
-		function deleteSchedule(event) {
-		const row = event.target.closest("tr");
-		row.remove();
-		}
-
-	</script>
+  <script src="../scripts/myscheduals.js"></script>
 </body>
 </html>
 

@@ -7,8 +7,7 @@
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<!-- Custom CSS -->
-	<link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="custom-styles.css">
+	<link rel="stylesheet" href="../style.css">
 </head>
 <body>
 	<header class="header">
@@ -57,43 +56,7 @@
 <script src="https://unpkg.com/@popperjs/core@2.10.1/dist/esm/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-9TSAIQ2VJkDhNnJGgW/iYFLfQ5SNZIhq+...." crossorigin="anonymous"></script>
 
-	<script>
-			// Save the values in variables or perform any desired operations
-	function saveFields(event) {
-		event.preventDefault(); // Prevent the form from submitting and page refresh
-
-		// Get form field values
-		var firstName = document.getElementById('first-name').value;
-		var lastName = document.getElementById('last-name').value;
-		var email = document.getElementById('email').value;
-		var password = document.getElementById('password').value;
-
-		// Perform validation or API call to save the user data
-		// Replace this with your own validation logic and data saving logic
-
-		// Redirect to the homepage or display a success message
-		window.location.href = 'index.html';
-	}
-
-	function checkPasswordStrength(password) {
-		var indicator = document.getElementById('password-strength-indicator');
-		var label = document.getElementById('password-strength-label');
-
-		// Reset the indicator
-		indicator.className = 'password-strength-indicator';
-
-		// Evaluate password strength
-		if (password.length < 7 || !/\d/.test(password) || !/[a-zA-Z]/.test(password) || !/[!@#$%^&*]/.test(password)) {
-			indicator.classList.add('password-weak');
-			label.textContent = 'Weak Password';
-			label.style.color = 'red';
-		} else {
-			indicator.classList.add('password-strong');
-			label.textContent = 'Strong Password';
-			label.style.color = 'green';
-		}
-	}
-</script>
+	<script src="../scripts/signup.js"></script>
 
 </body>
 
