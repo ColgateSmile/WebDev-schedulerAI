@@ -8,7 +8,6 @@
 			background-color: #fff;
 			border-radius: 5px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-			
 		}
 		.logo {
 			max-width: 50%;
@@ -24,12 +23,7 @@
 			width: 100%;
 			border-radius: 0;
 		}
-		.password-strength-indicator {
-			display: inline-block;
-			width: 100px;
-			height: 10px;
-			margin-top: 5px;
-		}
+	
 		.password-weak {
 			background-color: red;
 		}
@@ -39,6 +33,17 @@
 		.password-strong {
 			background-color: green;
 		}
+		.password-strength-indicator {
+			height: 10px;
+			margin-top: 5px;
+			margin-bottom: 10px;
+		}
+
+		.password-strength .bar {
+			height: 10px;
+			border-radius: 5px;
+			background-image: linear-gradient(to right, #F44336, #c4840f, #4CAF50);
+		  }
 			
 		.signup-container {
 			max-width: 500px;
@@ -60,24 +65,68 @@
 			font-weight: bold;
 		}
 
-		.password-strength-indicator {
-			height: 10px;
-			margin-top: 5px;
-			margin-bottom: 10px;
-		}
-
-		.password-weak {
-			background-color: #dc3545;
-		}
-		
-	
-
-		.password-strong {
-			background-color: #28a745;
-		}
 	
 		.login-container {
 			border: 2px solid blue;
 			padding: 20px;
 			border-radius: 10px;
 		}
+
+		.password-strength {
+			display: flex;
+			flex-direction: column;
+		  }
+		  
+		  .password-strength .bar {
+			height: 10px;
+			border-radius: 5px;
+			background-image: linear-gradient(to right, #F44336, #c4840f, #4CAF50);
+		  }
+		  
+		  .password-strength .bar:not(:last-child) {
+			margin-bottom: 5px;
+		  }
+
+		  .stylish-header {
+			font-size: 36px;
+			font-weight: bold;
+			color: #333;
+			text-shadow: 2px 2px 2px #ccc;
+		  }
+		  
+		  
+		  .assignment-lists {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		  }
+		  
+		  h1 {
+			font-size: 36px;
+			font-weight: bold;
+		  }
+		  
+		  .table {
+			margin-bottom: 20px;
+		  }
+		  
+		  .btn-view-list {
+			background-color: #007bff;
+			border-color: #007bff;
+		  }
+		  
+		  .btn-view-list:hover {
+			background-color: #0069d9;
+			border-color: #0062cc;
+		  }
+		  
+		  .btn-create-list {
+			background-color: #28a745;
+			border-color: #28a745;
+		  }
+		  
+		  .btn-create-list:hover {
+			background-color: #218838;
+			border-color: #1e7e34;
+		  }
+		  

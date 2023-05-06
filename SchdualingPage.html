@@ -20,23 +20,26 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Scheduler</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+ 
+	   <!-- Navbar -->
+	   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">SchedulerAI</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="index.html">Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="MySchduals.html">My schduals</a>
+                    <a class="nav-link" href="MySchduals.html">My Schedule<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Contact.html">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="LogIn.html">LogOut</a>
                 </li>
             </ul>
         </div>
@@ -66,7 +69,6 @@
                             <label for="user-in-charge">User in Charge:</label>
                             <input type="text" class="form-control" id="user-in-charge">
                         </div>
-                        <button type="button" class="btn btn-success" id="save-btn" data-toggle="modal" data-target="#assignmentListModal">Save Assignments</button>
                         <button type="submit" class="btn btn-primary">Add Assignment</button>
                         <button type="button" class="btn btn-primary" id="minimize-btn">Minimize</button>
                     </form>
@@ -119,7 +121,17 @@
                 </div>
             </div>
         </div>
+        <div class="container">  
+            <button type="button" class="btn btn-success" id="save-btn" data-toggle="modal" data-target="#assignmentListModal">Save Assignments</button>
+        </div>  
     </div>
+
+           	<!-- Footer -->
+               <footer class="footer">
+                <div class="container">
+                    <p>&copy; 2023 SchedulerAI</p>
+                </div>
+            </footer>
     
 
 <!-- Bootstrap JS -->
