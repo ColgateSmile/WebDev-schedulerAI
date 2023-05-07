@@ -1,148 +1,155 @@
+/* General Styles */
 body {
     background-color: #f8f9fa;
-	  min-height: 100vh;
-	padding-bottom: 60px; /* Adjust as needed to prevent overlap with footer */
-}
-.container {
-    margin-top: 100px;
+    min-height: 100vh;
+    padding-bottom: 60px; /* Adjust as needed to prevent overlap with footer */
+  }
+  
+  .container {
     max-width: 400px;
+    margin: 100px auto 0;
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.logo {
+  }
+  
+  .logo {
     max-width: 50%;
     height: auto;
-}
-.form-group {
+  }
+  
+  .form-group {
     margin-bottom: 20px;
-}
-.form-control {
+  }
+  
+  .form-control {
     border-radius: 0;
-}
-.btn-primary {
+  }
+  
+  .btn-primary {
     width: 100%;
     border-radius: 0;
-}
-
-.password-weak {
+  }
+  
+  .password-weak {
     background-color: red;
-}
-.password-medium {
+  }
+  
+  .password-medium {
     background-color: orange;
-}
-.password-strong {
+  }
+  
+  .password-strong {
     background-color: green;
-}
-.password-strength-indicator {
+  }
+  
+  .password-strength-indicator {
     height: 10px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
-
-.password-strength .bar {
+    margin: 5px 0 10px;
+  }
+  
+  .password-strength .bar {
     height: 10px;
     border-radius: 5px;
     background-image: linear-gradient(to right, #F44336, #c4840f, #4CAF50);
-}
-
-.signup-container {
+  }
+  
+  .signup-container {
     max-width: 500px;
     margin: 0 auto;
-    background-color: #f8f9fa;
     padding: 20px;
+    background-color: #f8f9fa;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border: 2px solid #007bff; /* Added border color */
-}
-
-.signup-container h1 {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #007bff;
+  }
+  
+  .signup-container h1 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
-}
-
-.form-group label {
+  }
+  
+  .form-group label {
     font-weight: bold;
-}
-
-
-.login-container {
+  }
+  
+  .login-container {
     border: 2px solid blue;
-    padding: 20px;
     border-radius: 10px;
-}
-
-.password-strength {
+    padding: 20px;
+  }
+  
+  .password-strength {
     display: flex;
     flex-direction: column;
-}
-
-.password-strength .bar {
+  }
+  
+  .password-strength .bar {
     height: 10px;
     border-radius: 5px;
     background-image: linear-gradient(to right, #F44336, #c4840f, #4CAF50);
-}
-
-.password-strength .bar:not(:last-child) {
     margin-bottom: 5px;
-}
-
-.stylish-header {
+  }
+  
+  .stylish-header {
     font-size: 36px;
     font-weight: bold;
     color: #333;
     text-shadow: 2px 2px 2px #ccc;
-}
-
-
-.assignment-lists {
+  }
+  
+  /* Assignment List Styles */
+  .assignment-lists {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-}
-
-h1 {
+  }
+  
+  .assignment-lists h1 {
     font-size: 36px;
     font-weight: bold;
-}
-
-.table {
+  }
+  
+  .table {
     margin-bottom: 20px;
-}
-
-.btn-view-list {
+  }
+  
+  .btn-view-list {
     background-color: #007bff;
     border-color: #007bff;
-}
-
-.btn-view-list:hover {
+  }
+  
+  .btn-view-list:hover {
     background-color: #0069d9;
     border-color: #0062cc;
-}
-
-.btn-create-list {
+  }
+  
+  .btn-create-list {
     background-color: #28a745;
     border-color: #28a745;
-}
-
-.btn-create-list:hover {
+  }
+  
+  .btn-create-list:hover {
     background-color: #218838;
     border-color: #1e7e34;
-}
-
-header {
+  }
+  
+  /* Fixed Header and Footer Styles */
+  header,
+  footer {
+    width: 100%;
+  }
+  
+  header {
     position: fixed;
     top: 0;
-    width: 100%;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #f5f5f5;
-  padding: 20px;
-  text-align: center;
+  }
+  
+  footer {
+    position: fixed;
+    bottom: 0;
+    background-color: #f5f5f5;
+    padding: 
 }

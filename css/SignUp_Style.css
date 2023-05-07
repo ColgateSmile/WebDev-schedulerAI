@@ -1,0 +1,80 @@
+/* Custom CSS */
+
+/* Main background color */
+body {
+  background-color: #f8f9fa;
+}
+
+/* Header styles */
+.header {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.header a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Signup form container styles */
+.signup-container {
+  background-color: #fff;
+  margin: 50px auto;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.signup-container h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.signup-container label {
+  font-weight: bold;
+}
+
+.signup-container .form-control {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.signup-container .form-control:focus {
+  border-color: #007bff;
+  box-shadow: none;
+}
+
+.signup-container .password-strength-indicator {
+  margin-top: 10px;
+}
+
+.signup-container .password-strength-bar {
+  height: 5px;
+  background-color: #ccc;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.signup-container #password-strength-text {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.signup-container .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: background-color 0.5s ease;
+}
+
+.signup-container .btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
