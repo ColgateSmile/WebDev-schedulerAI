@@ -31,13 +31,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Contact.html">Contact</a>
+          <a class="nav-link" href="Contact.php">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="LogIn.html">LogOut</a>
+          <a class="nav-link" href="LogIn.php">LogOut</a>
         </li>
       </ul>
     </div>

@@ -24,13 +24,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Contact.html">Contact</a>
+          <a class="nav-link" href="Contact.php">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="LogIn.html">LogOut</a>
+          <a class="nav-link" href="LogIn.php">LogOut</a>
         </li>
       </ul>
     </div>
@@ -41,7 +41,7 @@
     <div class="container">
       <h1 class="display-4">Welcome to SchedulerAI!</h1>
       <p class="lead">Simplify your scheduling with our easy-to-use platform.</p>
-      <a class="btn btn-primary btn-lg" href="SchdualingPage.html" role="button">Get Started</a>
+      <a class="btn btn-primary btn-lg" href="SchdualingPage.php" role="button">Get Started</a>
     </div>
   </div>
 
@@ -63,14 +63,14 @@
           <td>kids Schedule</td>
           <td>May 6, 2023</td>
           <td>user 1, User 2</td>
-          <td><a href="SchdualingPage.html" class="btn btn-primary btn-view-list">View List</a></td>
+          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
 
         </tr>
         <tr>
           <td>fixing around the house</td>
           <td>May 6, 2023</td>
           <td>User 3, User 4</td>
-          <td><a href="SchdualingPage.html" class="btn btn-primary btn-view-list">View List</a></td>
+          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
 
         </tr>
 
@@ -78,7 +78,7 @@
           <td>Workout</td>
           <td>May 6, 2023</td>
           <td>User 5, User 6</td>
-          <td><a href="SchdualingPage.html" class="btn btn-primary btn-view-list">View List</a></td>
+          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
 
         </tr>
 

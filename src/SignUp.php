@@ -47,7 +47,7 @@
               </div>
             </div>
             <button type="submit" class="btn btn-primary">Sign Up
-              <a class="nav-link" href="index.html"></a>
+              <a class="nav-link" href="index.php"></a>
             </button>
 
           </form>

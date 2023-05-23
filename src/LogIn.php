@@ -39,10 +39,10 @@
             <button type="submit" class="btn btn-primary mt-3">Login</button>
             <div class="forgot-signup mt-3">
               <button type="button" class="btn btn-link">Forgot password?</button>
-              <button type="button" class="btn btn-link" onclick="window.location.href = 'SignUp.html';">Sign up</button>
+              <button type="button" class="btn btn-link" onclick="window.location.href = 'SignUp.php';">Sign up</button>
             </div>
 
-            <div id="g_id_onload" data-client_id="411721865539-jj0p6k0o9u5hib7dn9frqcptkna4b7vp.apps.googleusercontent.com" data-auto_select="true" data-login_uri="index.html" data-type="standard" data-size="large" data-theme="outline"></div>
+            <div id="g_id_onload" data-client_id="411721865539-jj0p6k0o9u5hib7dn9frqcptkna4b7vp.apps.googleusercontent.com" data-auto_select="true" data-login_uri="index.php" data-type="standard" data-size="large" data-theme="outline"></div>
         </div>
         </form>
       </div>
