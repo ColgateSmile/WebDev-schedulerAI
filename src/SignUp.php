@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-+J/oNtp7hws/kvPWuV7Xte/6KjVhDB/3vU+q3U8YFmPp72DbK+MfRgB//8r6U2r6HrBwL1BrqDdd6Zs0sZzjg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href=" ../CSS/SignUp_Style.css">
+  <link rel="stylesheet" href="css/SignUp_Style.css">
 </head>
 
 <body>
@@ -69,7 +69,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoBtWBmJXpTu0CibVxufeGhjHVNUzoswE8CwN6Jw9" crossorigin="anonymous"></script>
 
   <!-- Custom JS -->
-  <script src="../scripts/signup.js"></script>
+  <script src="scripts/signup.js"></script>
 </body>
 
 </html>

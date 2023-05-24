@@ -137,7 +137,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6h1ta5dn7yl/2+v0abTuDh0m0m6dHQFjC2zFg0Jq5Z5CmK7bc" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6Vo+D6clDnjf4M6Aj4gx5Pi+sf4+JbB" crossorigin="anonymous"></script>
 
-  <script src="../scripts/schedualing.js"></script>
+  <script src="scripts/schedualing.js"></script>
 </body>
 
 </html>
