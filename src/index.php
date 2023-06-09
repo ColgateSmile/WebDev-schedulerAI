@@ -1,6 +1,17 @@
 <?php
-require_once "./db.php"
+session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
+    // User is not logged in, redirect to login page
+    header("Location: LogIn.php");
+    exit();
+}
 ?>
+<?php
+  require_once "./db.php"
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -30,7 +41,7 @@ require_once "./db.php"
           <a class="nav-link" href="Contact.php">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="LogIn.php">LogOut</a>
+          <a class="nav-link" href="logout.php">LogOut</a>
         </li>
       </ul>
     </div>
