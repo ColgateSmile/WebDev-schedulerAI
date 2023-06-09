@@ -65,14 +65,14 @@ if (isset($_COOKIE['rememberMe'])) {
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/login-style.css">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-l3UDC6yX4dH47gX2D9GSuMWEV4gK+lfhZ9elOqI9b94Nt1xrgDdpnXrK3y4EMIEiehTvsJlYdoS35f5db7Dy4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand">SchedulerAI</a>
-
-
   </nav>
 
   <div class="container">
@@ -83,6 +83,7 @@ if (isset($_COOKIE['rememberMe'])) {
           <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <?php if (!empty($errorMsg) && $_SERVER['REQUEST_METHOD'] === 'POST'): ?>
               <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle mr-2"></i>
                 <?php echo $errorMsg; ?>
               </div>
             <?php endif; ?>
