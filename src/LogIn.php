@@ -10,6 +10,9 @@ if ($isLoggedIn) {
     exit;
 }
 
+// Initialize error message
+$errorMsg = '';
+
 // If the form is submitted, process the login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the values from the form
@@ -32,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: index.php');
         exit;
     } else {
-        // Invalid login, display an error message
-        echo '<p>Invalid email or password. Please try again.</p>';
+        // Invalid login, set error message
+        $errorMsg = 'Invalid email or password. Please try again.';
     }
 }
 
@@ -62,6 +65,7 @@ if (isset($_COOKIE['remember_me'])) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/login-style.css">
 </head>
 
 <body>
@@ -78,7 +82,6 @@ if (isset($_COOKIE['remember_me'])) {
         <div class="login-container">
           <h1>Login SchedulerAI</h1>
           <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-          <!-- <form method="post" action="#" onsubmit="validateLogin(event)"> -->
             <div class="form-group">
               <label for="email">E-mail</label>
               <input type="text" class="form-control" id="email" name="email" placeholder="Enter e-mail">
@@ -95,12 +98,28 @@ if (isset($_COOKIE['remember_me'])) {
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
               <label class="form-check-label" for="rememberMe">Remember Me</label>
-            <div id="g_id_onload" data-client_id="411721865539-jj0p6k0o9u5hib7dn9frqcptkna4b7vp.apps.googleusercontent.com" data-auto_select="true" data-login_uri="index.php" data-type="standard" data-size="large" data-theme="outline"></div>
+            </div>
+          </form>
+          <!-- Error Modal -->
+          <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <?php echo $errorMsg; ?>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Error Modal -->
         </div>
-        </form>
       </div>
     </div>
-  </div>
   </div>
 
   <!-- Footer -->
@@ -121,14 +140,6 @@ if (isset($_COOKIE['remember_me'])) {
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-  <script src="scripts/login.js">
-    
-  </script>
 </body>
 
 </html>
