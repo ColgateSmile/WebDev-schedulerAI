@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === 'on';
 
     // Check if the email and password match the desired combination
-    if ($email === 'test@test.test' && $password === 'test123') {
+    if ($email === 'admin' && $password === 'admin') {
         // Set session for user authentication
         $_SESSION['user'] = true;
 
@@ -77,7 +77,8 @@ if (isset($_COOKIE['remember_me'])) {
       <div class="col-md-12 mx-auto">
         <div class="login-container">
           <h1>Login SchedulerAI</h1>
-          <form method="post" action="#" onsubmit="validateLogin(event)">
+          <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+          <!-- <form method="post" action="#" onsubmit="validateLogin(event)"> -->
             <div class="form-group">
               <label for="email">E-mail</label>
               <input type="text" class="form-control" id="email" name="email" placeholder="Enter e-mail">
@@ -91,7 +92,9 @@ if (isset($_COOKIE['remember_me'])) {
               <button type="button" class="btn btn-link">Forgot password?</button>
               <button type="button" class="btn btn-link" onclick="window.location.href = 'SignUp.php';">Sign up</button>
             </div>
-
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+              <label class="form-check-label" for="rememberMe">Remember Me</label>
             <div id="g_id_onload" data-client_id="411721865539-jj0p6k0o9u5hib7dn9frqcptkna4b7vp.apps.googleusercontent.com" data-auto_select="true" data-login_uri="index.php" data-type="standard" data-size="large" data-theme="outline"></div>
         </div>
         </form>
@@ -124,6 +127,7 @@ if (isset($_COOKIE['remember_me'])) {
   <script src="https://apis.google.com/js/platform.js" async defer></script>
 
   <script src="scripts/login.js">
+    
   </script>
 </body>
 

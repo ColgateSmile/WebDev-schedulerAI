@@ -140,6 +140,7 @@ body {
   header,
   footer {
     width: 100%;
+    position: fixed;
   }
   
   header {
