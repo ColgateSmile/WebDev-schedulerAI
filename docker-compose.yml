@@ -13,7 +13,9 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_HOST: localhost
+      
 
   phpmyadmin:
     image: phpmyadmin:latest

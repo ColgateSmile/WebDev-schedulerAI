@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         // Invalid login, set error message
-        $errorMsg = 'Invalid email or password. Please try again.';
+        $errorMsg = 'Invalid email or password!';
     }
 }
 
@@ -53,7 +53,9 @@ if (isset($_COOKIE['rememberMe'])) {
     }
 }
 ?>
-
+<?php
+  require_once "./db.php"
+?>
 <!DOCTYPE html>
 <html>
 <head>

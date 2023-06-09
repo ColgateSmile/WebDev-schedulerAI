@@ -1,27 +1,51 @@
 <?php
-mysqli_report(MYSQLI_REPORT_OFF);
-$servername = "db";
-$username = "root";
-$password = "root"; // change this to empty string if you are using xampp and not mamp
-$conn = new mysqli($servername, $username, $password);
-if ($conn->connect_error) {
-  echo "<h2>error connecting to db</h2>";
-  die();
-}
-$dbName = "tirugl_9";
+// MySQL database connection settings
+$host_docker = 'db';
+$host_xampp = 'localhost';
+$username = 'root';
+$password = '';
 
-if (!$conn->select_db($dbName)) {
-  echo "<p>creating new database</p>";
-  $sql = "CREATE DATABASE $dbName";
-  if ($conn->query($sql)) {
-    $conn->select_db($dbName);
-    echo "<p>database $dbName created</p>";
-    echo "<p>creating customers table</p>";
-    $sql = 'CREATE TABLE `tirugl_9`.`customers` ( `id` INT(255) NOT NULL AUTO_INCREMENT , `firstname` VARCHAR(999) NOT NULL , `lastname` VARCHAR(999) NOT NULL , `phone` VARCHAR(999) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
-    if ($conn->query($sql)) {
-      echo "customers tables created";
-    } else {
-      echo "<p> error creating customers table error: $conn->error </p>";
-    }
-  };
+// Connect to MySQL server
+$conn = mysqli_connect($host_xampp, $username, $password);
+$docker = false;
+// Check connection with xampp
+if (!$conn) {
+  // check connection with docker otherwise
+  $conn = mysqli_connect($host_docker, $username, $password);
+  if (!$conn) {
+    die('Connection failed: ' . mysqli_connect_error());
+  }
+}
+
+// Create the database name
+$id1 = '312148489'; // Replace with your desired ID1
+$id2 = '207037227'; // Replace with your desired ID2
+$dbName = $id1 . '_' . $id2;
+
+// Create the database
+$sql = 'CREATE DATABASE ' . $dbName;
+if (mysqli_query($conn, $sql)) {
+    echo 'Database created successfully<br>';
+} else {
+    echo 'Error creating database: ' . mysqli_error($conn) . '<br>';
+}
+
+// Select the database
+mysqli_select_db($conn, $dbName);
+
+// Create the users table
+// $sql = file_get_contents($dbName . '.sql');
+$sql = 'CREATE TABLE IF NOT EXISTS `users` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(30) NOT NULL,
+  `lastname` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;';
+
+if (mysqli_query($conn, $sql)) {
+    echo 'Table "users" created successfully';
+} else {
+    echo 'Error creating table: ' . mysqli_error($conn);
 }

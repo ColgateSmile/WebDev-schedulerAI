@@ -8,9 +8,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     exit();
 }
 ?>
-<?php
-  require_once "./db.php"
-?>
 
 <!DOCTYPE html>
 <html>
