@@ -25,7 +25,7 @@ function validateLogin(event) {
 
     if (isAdmin) {
         // Redirect to the admin page
-        window.location.href = 'index.html';
+        window.location.href = 'index.php';
     } else {
         // Display an error message or perform any necessary action
         alert('Invalid email or password. Please try again.');

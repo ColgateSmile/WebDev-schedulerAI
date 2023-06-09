@@ -1,6 +1,56 @@
 <?php
+session_start();
 
+// Check if the user is already logged in
+$isLoggedIn = isset($_SESSION['user']);
+
+// If the user is already logged in, redirect to the homepage
+if ($isLoggedIn) {
+    header('Location: index.php');
+    exit;
+}
+
+// If the form is submitted, process the login
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the values from the form
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === 'on';
+
+    // Check if the email and password match the desired combination
+    if ($email === 'test@test.test' && $password === 'test123') {
+        // Set session for user authentication
+        $_SESSION['user'] = true;
+
+        // If "Remember me" is checked, set a cookie
+        if ($rememberMe) {
+            $cookieExpiration = time() + (30 * 24 * 60 * 60); // 30 days
+            setcookie('remember_me', $email, $cookieExpiration);
+        }
+
+        // Redirect to the homepage
+        header('Location: index.php');
+        exit;
+    } else {
+        // Invalid login, display an error message
+        echo '<p>Invalid email or password. Please try again.</p>';
+    }
+}
+
+// Check if a remember me cookie exists and log in the user automatically
+if (isset($_COOKIE['remember_me'])) {
+    $email = $_COOKIE['remember_me'];
+
+    // Implement your email validation logic here
+    // Replace the condition below with your actual validation
+    if ($email === 'test@test.test') {
+        $_SESSION['user'] = true;
+        header('Location: index.php');
+        exit;
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 

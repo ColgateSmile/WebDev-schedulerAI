@@ -24,8 +24,8 @@
     localStorage.setItem("email", email);
     localStorage.setItem("password", password);
 
-    // Redirect to index.html
-    window.location.href ="../src/index.html";
+    // Redirect to index.php
+    window.location.href ="../src/index.php";
   }
 
   function checkPasswordStrength(password) {
