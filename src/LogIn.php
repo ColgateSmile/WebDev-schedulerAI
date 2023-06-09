@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the values from the form
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $rememberMe = isset($_POST['remember_me']) && $_POST['remember_me'] === 'on';
+    $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
     // Check if the email and password match the desired combination
     if ($email === 'admin' && $password === 'admin') {
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If "Remember me" is checked, set a cookie
         if ($rememberMe) {
             $cookieExpiration = time() + (30 * 24 * 60 * 60); // 30 days
-            setcookie('remember_me', $email, $cookieExpiration);
+            setcookie('rememberMe', $email, $cookieExpiration);
         }
 
         // Redirect to the homepage
@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Check if a remember me cookie exists and log in the user automatically
-if (isset($_COOKIE['remember_me'])) {
-    $email = $_COOKIE['remember_me'];
+if (isset($_COOKIE['rememberMe'])) {
+    $email = $_COOKIE['rememberMe'];
 
     // Implement your email validation logic here
     // Replace the condition below with your actual validation
@@ -56,7 +56,6 @@ if (isset($_COOKIE['remember_me'])) {
 
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,6 +81,11 @@ if (isset($_COOKIE['remember_me'])) {
         <div class="login-container">
           <h1>Login SchedulerAI</h1>
           <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <?php if (!empty($errorMsg) && $_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+              <div class="alert alert-danger" role="alert">
+                <?php echo $errorMsg; ?>
+              </div>
+            <?php endif; ?>
             <div class="form-group">
               <label for="email">E-mail</label>
               <input type="text" class="form-control" id="email" name="email" placeholder="Enter e-mail">
@@ -100,23 +104,6 @@ if (isset($_COOKIE['remember_me'])) {
               <label class="form-check-label" for="rememberMe">Remember Me</label>
             </div>
           </form>
-          <!-- Error Modal -->
-          <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <?php echo $errorMsg; ?>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Error Modal -->
         </div>
       </div>
     </div>
