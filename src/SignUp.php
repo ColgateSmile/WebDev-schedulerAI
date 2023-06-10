@@ -1,37 +1,23 @@
 <?php
-// Check if the form is submitted
+require_once "db.php";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
-    $firstName = $_POST['first-name'];
-    $lastName = $_POST['last-name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if (isset($_POST['submit'])) {
+        $firstName = $_POST['first-name'];
+        $lastName = $_POST['last-name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-    // Perform database operations
-    $servername = "your_servername";
-    $username = "your_username";
-    $password = "your_password";
-    $dbname = "your_dbname";
+        // Prepare and execute the SQL query
+        $stmt = $conn->prepare("INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $firstName, $lastName, $email, $password);
 
-    // Create a new connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check the connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        if ($stmt->execute()) {
+            echo "User registered successfully";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
     }
-
-    // Prepare and execute the SQL query
-    $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('$firstName', '$lastName', '$email', '$password')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "User registered successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-    // Close the connection
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="col-md-12">
         <div class="signup-container border border-primary p-4 rounded col-md-6">
 
-          <form id="signup-form">
+          <form id="signup-form" action="" method="POST"> <!-- Added method="POST" -->
             <div class="form-group">
               <label for="first-name">First Name</label>
               <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Enter first name" required>
@@ -80,10 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id="password-strength-text"></div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up
-              <a class="nav-link" href="index.php"></a>
-            </button>
-
+            <button type="submit" class="btn btn-primary" name="submit">Sign Up</button>
           </form>
 
         </div>
@@ -97,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
   <!-- Bootstrap JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoBtWBmJXpTu0CibVxufeGhjHVNUzoswE8CwN6Jw9" crossorigin="anonymous"></script>

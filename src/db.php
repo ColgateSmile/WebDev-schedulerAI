@@ -21,7 +21,7 @@ $result = mysqli_query($conn, 'SELECT VERSION()');
 if ($result) {
     $row = mysqli_fetch_array($result);
     $mysqlVersion = $row[0];
-    echo 'MySQL Server Version: ' . $mysqlVersion;
+    // echo 'MySQL Server Version: ' . $mysqlVersion;
 } else {
     echo 'Error retrieving MySQL server version: ' . mysqli_error($conn);
 }
@@ -33,7 +33,7 @@ $dbName = $id1 . '_' . $id2;
 // Create the database
 $sql = 'CREATE DATABASE IF NOT EXISTS ' . $dbName;
 if (mysqli_query($conn, $sql)) {
-    echo 'Database created successfully<br>';
+    // echo 'Database created successfully<br>';
 } else {
     echo 'Error creating database: ' . mysqli_error($conn) . '<br>';
 }
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ';
 
 if (mysqli_query($conn, $sql)) {
-    echo 'Table "users" created successfully';
+    // echo 'Table "users" created successfully';
 } else {
     echo 'Error creating table: ' . mysqli_error($conn);
 }
