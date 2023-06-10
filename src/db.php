@@ -6,12 +6,12 @@ $username = 'root';
 $password = '';
 
 // Connect to MySQL server
-$conn = mysqli_connect($host_xampp, $username, $password);
+$conn = @mysqli_connect($host_xampp, $username, $password);
 $docker = false;
 // Check connection with xampp
 if (!$conn) {
   // check connection with docker otherwise
-  $conn = mysqli_connect($host_docker, $username, $password);
+  $conn = @mysqli_connect($host_docker, $username, $password);
   if (!$conn) {
     die('Connection failed: ' . mysqli_connect_error());
   }
