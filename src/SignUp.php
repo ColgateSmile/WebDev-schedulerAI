@@ -1,22 +1,25 @@
+<?php require_once "db.php"; ?>
 <?php
-require_once "db.php";
+if (isset($_POST['submit'])) {
+    // Retrieve form data
+    $firstName = $_POST['first-name'];
+    $lastName = $_POST['last-name'];
+    $email = $_POST['email'];
+    $formPassword = $_POST['password'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['submit'])) {
-        $firstName = $_POST['first-name'];
-        $lastName = $_POST['last-name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+    // Prepare and execute the SQL query
+    $sql = "INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$lastName', '$email', '$formPassword')";
 
-        // Prepare and execute the SQL query
-        $stmt = $conn->prepare("INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $firstName, $lastName, $email, $password);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-        if ($stmt->execute()) {
-            echo "User registered successfully";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        echo "User registered successfully";
+        echo "<script>window.location.href = 'LogIn.php';</script>";
+        exit;
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>
