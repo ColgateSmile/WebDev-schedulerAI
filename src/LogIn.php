@@ -6,7 +6,7 @@ $isLoggedIn = isset($_SESSION['user']);
 
 // If the user is already logged in, redirect to the homepage
 if ($isLoggedIn) {
-    header('Location: index.php');
+    echo "<script>window.location.href = 'index.php';</script>";
     exit;
 }
 
@@ -20,37 +20,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
-    // Check if the email and password match the desired combination
-    if ($email === 'admin' && $password === 'admin') {
-        // Set session for user authentication
-        $_SESSION['user'] = true;
+    // Perform database validation here
+    // Replace the database connection details with your own
+    $server_xampp = 'localhost';
+    $server_docker = 'db';
+    $username = 'root';
+    $db_password = '';
+    $database = '312148489_207037227';
 
-        // If "Remember me" is checked, set a cookie
-        if ($rememberMe) {
-            $cookieExpiration = time() + (30 * 24 * 60 * 60); // 30 days
-            setcookie('rememberMe', $email, $cookieExpiration);
+    // Create a new MySQLi object
+    $conn = new mysqli($server_xampp, $username, $db_password, $database);
+
+    // Check the connection
+    if ($conn->connect_error) {
+        $conn = new mysqli($server_docker, $username, $db_password, $database);
+        if ($conn->connect_error) {
+            die('Connection failed: ' . $conn->connect_error);
         }
-
-        // Redirect to the homepage
-        header('Location: index.php');
-        exit;
-    } else {
-        // Invalid login, set error message
-        $errorMsg = 'Invalid email or password!';
     }
-}
 
-// Check if a remember me cookie exists and log in the user automatically
-if (isset($_COOKIE['rememberMe'])) {
-    $email = $_COOKIE['rememberMe'];
+    // Prepare and execute the query
+    $stmt = $conn->prepare('SELECT * FROM users WHERE email = ?');
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
 
-    // Implement your email validation logic here
-    // Replace the condition below with your actual validation
-    if ($email === 'test@test.test') {
-        $_SESSION['user'] = true;
-        header('Location: index.php');
-        exit;
+    // Get the result
+    $result = $stmt->get_result();
+
+    // Check if the user exists in the database
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        $dbPassword = $row['password'];
+
+        // Verify the password
+        if ($password === $dbPassword) {
+            // Set session for user authentication
+            $_SESSION['user'] = true;
+
+            // If "Remember me" is checked, set a cookie
+            if ($rememberMe) {
+                $cookieExpiration = time() + (30 * 24 * 60 * 60); // 30 days
+                setcookie('rememberMe', $email, $cookieExpiration);
+            }
+
+            // Redirect to the homepage
+            echo "<script>window.location.href = 'index.php';</script>";
+            exit;
+        }
     }
+
+    // Invalid login, set error message
+    $errorMsg = 'Invalid email or password!';
+
+    // Close the database connection
+    $stmt->close();
+    $conn->close();
 }
 ?>
 <?php

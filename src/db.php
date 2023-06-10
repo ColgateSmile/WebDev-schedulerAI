@@ -42,7 +42,7 @@ if (mysqli_query($conn, $sql)) {
 mysqli_select_db($conn, $dbName);
 
 // Create the users table
-$sql = file_get_contents('db.sql');
+// $sql = file_get_contents('./db.sql');
 $sql = '
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
