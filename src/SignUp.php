@@ -1,5 +1,38 @@
 <?php
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form data
+    $firstName = $_POST['first-name'];
+    $lastName = $_POST['last-name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
+    // Perform database operations
+    $servername = "your_servername";
+    $username = "your_username";
+    $password = "your_password";
+    $dbname = "your_dbname";
+
+    // Create a new connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check the connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Prepare and execute the SQL query
+    $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('$firstName', '$lastName', '$email', '$password')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "User registered successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    // Close the connection
+    $conn->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
