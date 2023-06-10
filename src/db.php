@@ -17,13 +17,21 @@ if (!$conn) {
   }
 }
 
+$result = mysqli_query($conn, 'SELECT VERSION()');
+if ($result) {
+    $row = mysqli_fetch_array($result);
+    $mysqlVersion = $row[0];
+    echo 'MySQL Server Version: ' . $mysqlVersion;
+} else {
+    echo 'Error retrieving MySQL server version: ' . mysqli_error($conn);
+}
 // Create the database name
 $id1 = '312148489'; // Replace with your desired ID1
 $id2 = '207037227'; // Replace with your desired ID2
 $dbName = $id1 . '_' . $id2;
 
 // Create the database
-$sql = 'CREATE DATABASE ' . $dbName;
+$sql = 'CREATE DATABASE IF NOT EXISTS ' . $dbName;
 if (mysqli_query($conn, $sql)) {
     echo 'Database created successfully<br>';
 } else {
@@ -34,15 +42,17 @@ if (mysqli_query($conn, $sql)) {
 mysqli_select_db($conn, $dbName);
 
 // Create the users table
-// $sql = file_get_contents($dbName . '.sql');
-$sql = 'CREATE TABLE IF NOT EXISTS `users` (
+$sql = file_get_contents('db.sql');
+$sql = '
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;';
+) ENGINE=InnoDB;
+';
 
 if (mysqli_query($conn, $sql)) {
     echo 'Table "users" created successfully';
