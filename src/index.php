@@ -4,6 +4,7 @@ session_start();
 // Check if the user is not logged in
 if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     // User is not logged in, redirect to login page
+
     header("Location: LogIn.php");
     exit();
 }
@@ -31,6 +32,11 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
+        <li>
+          <span class="navbar-text ml-auto">
+            Welcome, <?php echo $_SESSION['username'] ?> <!-- Display the user's name -->
+          </span>
+        </li>
         <li class="nav-item active">
           <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
         </li>
