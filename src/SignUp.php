@@ -1,4 +1,27 @@
+<?php require_once "db.php"; ?>
 <?php
+if (isset($_POST['submit'])) {
+    // Retrieve form data
+    $firstName = $_POST['first-name'];
+    $lastName = $_POST['last-name'];
+    $email = $_POST['email'];
+    $formPassword = $_POST['password'];
+
+    // Prepare and execute the SQL query
+    $sql = "INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$lastName', '$email', '$formPassword')";
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    if ($conn->query($sql) === TRUE) {
+        echo "User registered successfully";
+        echo "<script>window.location.href = 'LogIn.php';</script>";
+        exit;
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +48,7 @@
       <div class="col-md-12">
         <div class="signup-container border border-primary p-4 rounded col-md-6">
 
-          <form id="signup-form">
+          <form id="signup-form" action="" method="POST"> <!-- Added method="POST" -->
             <div class="form-group">
               <label for="first-name">First Name</label>
               <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Enter first name" required>
@@ -46,10 +69,7 @@
                 <div id="password-strength-text"></div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up
-              <a class="nav-link" href="index.php"></a>
-            </button>
-
+            <button type="submit" class="btn btn-primary" name="submit">Sign Up</button>
           </form>
 
         </div>
@@ -63,7 +83,6 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
   <!-- Bootstrap JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoBtWBmJXpTu0CibVxufeGhjHVNUzoswE8CwN6Jw9" crossorigin="anonymous"></script>
