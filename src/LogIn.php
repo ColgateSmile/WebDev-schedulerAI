@@ -123,13 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="btn btn-primary mt-3">Login</button>
             <div class="forgot-signup mt-3">
-              <button type="button" class="btn btn-link">Forgot password?</button>
+              <button type="button" class="btn btn-link" onclick="window.location.href = 'restore.php';">Forgot password?</button>
               <button type="button" class="btn btn-link" onclick="window.location.href = 'SignUp.php';">Sign up</button>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
               <label class="form-check-label" for="rememberMe">Remember Me</label>
             </div>
+
           </form>
         </div>
       </div>
