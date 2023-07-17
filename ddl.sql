@@ -29,6 +29,7 @@ CREATE TABLE tasks (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     due_date DATETIME NOT NULL,
+    completed BOOLEAN NOT NULL,
     user_in_charge INT NOT NULL,
     PRIMARY KEY (list_id, id),
     FOREIGN KEY (user_in_charge) REFERENCES users(id),
