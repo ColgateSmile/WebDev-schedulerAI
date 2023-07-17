@@ -8,6 +8,7 @@ $password = '';
 // Connect to MySQL server
 $conn = @mysqli_connect($host_xampp, $username, $password);
 $docker = false;
+
 // Check connection with xampp
 if (!$conn) {
   // check connection with docker otherwise
@@ -25,6 +26,7 @@ if ($result) {
 } else {
     echo 'Error retrieving MySQL server version: ' . mysqli_error($conn);
 }
+
 // Create the database name
 $id1 = '312148489'; // Replace with your desired ID1
 $id2 = '207037227'; // Replace with your desired ID2
@@ -42,7 +44,6 @@ if (mysqli_query($conn, $sql)) {
 mysqli_select_db($conn, $dbName);
 
 // Create the users table
-// $sql = file_get_contents('./db.sql');
 $sql = '
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -56,6 +57,60 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 if (mysqli_query($conn, $sql)) {
     // echo 'Table "users" created successfully';
+} else {
+    echo 'Error creating table: ' . mysqli_error($conn);
+}
+
+// Create the lists table
+$sql = '
+CREATE TABLE IF NOT EXISTS `lists` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `created_by` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB;
+';
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Table "lists" created successfully';
+} else {
+    echo 'Error creating table: ' . mysqli_error($conn);
+}
+
+// Create the participants table
+$sql = '
+CREATE TABLE IF NOT EXISTS `participants` (
+  `list_id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`list_id`,`user_id`)
+) ENGINE=InnoDB;
+';
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Table "participants" created successfully';
+} else {
+    echo 'Error creating table: ' . mysqli_error($conn);
+}
+
+// Create the tasks table
+$sql = '
+CREATE TABLE IF NOT EXISTS `tasks` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `list_id` int UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `due_date` datetime NOT NULL,
+  `user_in_charge` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_in_charge`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`)
+) ENGINE=InnoDB;
+';
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Table "tasks" created successfully';
 } else {
     echo 'Error creating table: ' . mysqli_error($conn);
 }
