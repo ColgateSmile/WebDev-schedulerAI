@@ -61,6 +61,27 @@ if (mysqli_query($conn, $sql)) {
     echo 'Error creating table: ' . mysqli_error($conn);
 }
 
+// Insert three users with the same password '123test' if they don't already exist
+$sql = "
+INSERT IGNORE INTO `users` (`firstname`, `lastname`, `email`, `password`)
+SELECT * FROM (
+    SELECT 'User 1', 'Test', 'user1@test.test', '123test'
+    UNION ALL
+    SELECT 'User 2', 'Test', 'user2@test.test', '123test'
+    UNION ALL
+    SELECT 'User 3', 'Test', 'user3@test.test', '123test'
+) AS temp
+WHERE NOT EXISTS (
+    SELECT 1 FROM `users` WHERE `email` IN ('user1@test.test', 'user2@test.test', 'user3@test.test')
+);
+";
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Users inserted successfully';
+} else {
+    echo 'Error inserting users: ' . mysqli_error($conn);
+}
+
 // Create the lists table
 $sql = '
 CREATE TABLE IF NOT EXISTS `lists` (
