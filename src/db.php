@@ -65,11 +65,11 @@ if (mysqli_query($conn, $sql)) {
 $sql = "
 INSERT IGNORE INTO `users` (`firstname`, `lastname`, `email`, `password`)
 SELECT * FROM (
-    SELECT 'User 1', 'Test', 'user1@test.test', '123test'
+    SELECT 'User 1', 'Test', 'user1@test.test', 'test123'
     UNION ALL
-    SELECT 'User 2', 'Test', 'user2@test.test', '123test'
+    SELECT 'User 2', 'Test', 'user2@test.test', 'test123'
     UNION ALL
-    SELECT 'User 3', 'Test', 'user3@test.test', '123test'
+    SELECT 'User 3', 'Test', 'user3@test.test', 'test123'
 ) AS temp
 WHERE NOT EXISTS (
     SELECT 1 FROM `users` WHERE `email` IN ('user1@test.test', 'user2@test.test', 'user3@test.test')
@@ -100,11 +100,34 @@ if (mysqli_query($conn, $sql)) {
     echo 'Error creating table: ' . mysqli_error($conn);
 }
 
+// Insert three diferent lists if they don't already exist
+$sql = "
+INSERT INTO `lists` (`name`, `created_at`, `created_by`)
+SELECT * FROM (
+    SELECT 'List 1', '2023-04-01', 1
+    UNION ALL
+    SELECT 'List 2', '2023-05-01', 2
+    UNION ALL
+    SELECT 'List 3', '2023-06-01', 3
+) AS temp
+WHERE NOT EXISTS (
+    SELECT 1 FROM `lists` WHERE `name` IN ('List 1', 'List 2', 'List 3')
+);
+";
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Users inserted successfully';
+} else {
+    echo 'Error inserting lists: ' . mysqli_error($conn);
+}
+
 // Create the participants table
 $sql = '
 CREATE TABLE IF NOT EXISTS `participants` (
   `list_id` int UNSIGNED NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
+  FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   PRIMARY KEY (`list_id`,`user_id`)
 ) ENGINE=InnoDB;
 ';
@@ -113,6 +136,33 @@ if (mysqli_query($conn, $sql)) {
     // echo 'Table "participants" created successfully';
 } else {
     echo 'Error creating table: ' . mysqli_error($conn);
+}
+
+// Insert the participants if they don't already exist
+$sql = "
+INSERT INTO `participants` (`list_id`, `user_id`)
+SELECT * FROM (
+    SELECT 1 as list_id, 1 as user_id
+    UNION ALL
+    SELECT 1, 2
+    UNION ALL
+    SELECT 2, 2
+    UNION ALL
+    SELECT 2, 3
+    UNION ALL
+    SELECT 3, 1
+    UNION ALL
+    SELECT 3, 3
+) AS temp
+WHERE NOT EXISTS (
+    SELECT 1 FROM `participants` WHERE (`list_id`, `user_id`) IN ((1, 1), (1, 2), (2, 2), (2, 3), (3, 1), (3, 3))
+);
+";
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Users inserted successfully';
+} else {
+    echo 'Error inserting participants: ' . mysqli_error($conn);
 }
 
 // Create the tasks table
@@ -124,9 +174,10 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `description` varchar(255) NOT NULL,
   `due_date` datetime NOT NULL,
   `user_in_charge` int UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
+  `completed` boolean NOT NULL DEFAULT 0,
   FOREIGN KEY (`user_in_charge`) REFERENCES `users` (`id`),
-  FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`)
+  FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 ';
 
@@ -134,4 +185,33 @@ if (mysqli_query($conn, $sql)) {
     // echo 'Table "tasks" created successfully';
 } else {
     echo 'Error creating table: ' . mysqli_error($conn);
+}
+
+// Insert the tasks if they don't already exist
+$sql = "
+INSERT INTO `tasks` (`list_id`, `name`, `description`, `due_date`, `user_in_charge`, `completed`)
+SELECT list_id, name, description, due_date, user_in_charge, completed FROM (
+    SELECT 1 as list_id
+    UNION ALL
+    SELECT 1, 'Task 1', 'Task 1 description', '2023-04-05', 1, 0
+    UNION ALL
+    SELECT 1, 'Task 2', 'Task 2 description', '2023-04-10', 2, 0
+    UNION ALL
+    SELECT 2, 'Task 1', 'Task 1 description', '2023-05-05', 2, 0
+    UNION ALL
+    SELECT 2, 'Task 2', 'Task 2 description', '2023-05-10', 3, 0
+    UNION ALL
+    SELECT 3, 'Task 1', 'Task 1 description', '2023-06-05', 1, 0
+    UNION ALL
+    SELECT 3, 'Task 2', 'Task 2 description', '2023-06-10', 3, 0
+) AS temp
+WHERE NOT EXISTS (
+    SELECT 1 FROM `tasks` WHERE (`list_id`, `name`, `description`, `due_date`, `user_in_charge`, `completed`) IN ((1, NULL, NULL, NULL, NULL, NULL), (1, 'Task 1', 'Task 1 description', '2023-04-05', 1, 0), (1, 'Task 2', 'Task 2 description', '2023-04-10', 2, 0), (2, 'Task 1', 'Task 1 description', '2023-05-05', 2, 0), (2, 'Task 2', 'Task 2 description', '2023-05-10', 3, 0), (3, 'Task 1', 'Task 1 description', '2023-06-05', 1, 0), (3, 'Task 2', 'Task 2 description', '2023-06-10', 3, 0))
+);
+";
+
+if (mysqli_query($conn, $sql)) {
+    // echo 'Users inserted successfully';
+} else {
+    echo 'Error inserting tasks: ' . mysqli_error($conn);
 }
