@@ -27,10 +27,17 @@ function saveFields(event) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
-        // Request successful, do something with the response if needed
-        console.log(xhr.responseText);
-        // Redirect to index.php or perform other actions
-        // window.location.href = "index.php";
+        const response = xhr.responseText;
+        if (response === "Invalid email address") {
+          displayError("Invalid email address");
+        } else if (response === "Email address already exists") {
+          displayError("Email address already exists");
+        } else {
+          // Request successful, do something with the response if needed
+          console.log(xhr.responseText);
+          // Redirect to index.php or perform other actions
+          // window.location.href = "index.php";
+        }
       } else {
         // Request failed, display an error message if needed
         console.error(xhr.status);
@@ -43,6 +50,11 @@ function saveFields(event) {
 
   // Send the JSON data to the PHP file
   xhr.send(jsonData);
+}
+
+function displayError(errorMessage) {
+  const errorElement = document.getElementById("error-message");
+  errorElement.innerText = errorMessage;
 }
 
 // Initialize password strength bar

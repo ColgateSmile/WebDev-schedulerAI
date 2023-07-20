@@ -1,4 +1,5 @@
 <?php require_once "db.php"; ?>
+
 <?php
 if (isset($_POST['submit'])) {
     // Retrieve form data
@@ -6,6 +7,21 @@ if (isset($_POST['submit'])) {
     $lastName = $_POST['last-name'];
     $email = $_POST['email'];
     $formPassword = $_POST['password'];
+
+    // Check if the email is valid
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email address";
+        exit;
+    }
+
+    // Check if the email already exists in the database
+    $sql_check_email = "SELECT COUNT(*) AS count FROM `users` WHERE `email`='$email'";
+    $result = mysqli_query($conn, $sql_check_email);
+    $row = mysqli_fetch_assoc($result);
+    if ($row['count'] > 0) {
+        echo "Email address already exists";
+        exit;
+    }
 
     // Prepare and execute the SQL query
     $sql = "INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$lastName', '$email', '$formPassword')";
@@ -48,7 +64,7 @@ if (isset($_POST['submit'])) {
       <div class="col-md-12">
         <div class="signup-container border border-primary p-4 rounded col-md-6">
 
-          <form id="signup-form" action="" method="POST"> <!-- Added method="POST" -->
+          <form id="signup-form" action="" method="POST">
             <div class="form-group">
               <label for="first-name">First Name</label>
               <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Enter first name" required>
@@ -60,6 +76,7 @@ if (isset($_POST['submit'])) {
             <div class="form-group">
               <label for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+              <span id="error-message" style="color: red;"></span>
             </div>
             <div class="form-group">
               <label for="password">Password <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Password must be at least 10 characters long and contain at least one number, one letter, and one symbol (!@#$%^&*)"></i></label>
