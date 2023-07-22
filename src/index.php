@@ -143,8 +143,32 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
               <input type="text" class="form-control" id="listName">
             </div>
             <div class="form-group">
+              <label for="userSearch">Search Users:</label>
+              <input type="text" class="form-control" id="userSearch" name="userSearch" oninput="searchUsers()">
+            </div>
+            <div class="form-group">
               <label for="listUsers">Permitted Users:</label>
-              <input type="text" class="form-control" id="listUsers">
+              <div id="userList">
+              <?php
+                $sql = "SELECT email, firstname, lastname FROM users WHERE email <> ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $_SESSION['email']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    $username = $row['firstname'] . " " . $row['lastname'];
+                    $user_email = $row['email'];
+                    echo '<div class="form-check">';
+                    echo '<input class="form-check-input" type="checkbox" name="listUsers[]" value="' . $user_email . '" id="user_' . $user_email . '">';
+                    echo '<label class="form-check-label" for="user_' . $user_email . '">' . $username . " - " . $user_email .'</label>';
+                    echo '</div>';
+                  }
+                }
+              // $conn->close();
+              ?>
+              </div>
             </div>
           </form>
         </div>
