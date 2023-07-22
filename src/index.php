@@ -73,7 +73,47 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
       </thead>
       <tbody>
         <tr>
-          <td>kids Schedule</td>
+          <?php 
+          require_once "./db.php";
+          $sql = "
+            SELECT l.id, l.name AS list_name, l.created_at
+            FROM lists l
+            JOIN users u ON l.created_by = u.id
+            WHERE u.email = ?
+            UNION
+            SELECT l.id, l.name AS list_name, l.created_at
+            FROM lists l
+            JOIN participants p ON l.id = p.list_id
+            JOIN users u ON p.user_id = u.id
+            WHERE u.email = ?;
+          ";
+          $stmt1 = $conn->prepare($sql);
+          $stmt1->bind_param('ss', $_SESSION['email'], $_SESSION['email']);
+          $stmt1->execute();
+          $result = $stmt1->get_result();
+
+          foreach($result as $row){
+            echo "<tr><td>" . $row['list_name'] . "</td>" .
+                 "<td>" . $row['created_at'] . "</td>";
+          
+            $sql = "
+              SELECT u.firstname, u.lastname
+              FROM participants p
+              JOIN users u ON p.user_id = u.id
+              WHERE p.list_id = ?;
+            ";
+            $stmt2 = $conn->prepare($sql);
+            $stmt2->bind_param('i', $row['id']);
+            $stmt2->execute();
+            $result = $stmt2->get_result();
+            echo "<td>";
+            foreach($result as $row)
+              echo $row['firstname'] . " " . $row['lastname'] . ",";
+            echo "</td>";
+            echo "<td><a href='SchdualingPage.php' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
+          }
+          ?>
+          <!-- <td>kids Schedule</td>
           <td>May 6, 2023</td>
           <td>user 1, User 2</td>
           <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
@@ -93,7 +133,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
           <td>User 5, User 6</td>
           <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
 
-        </tr>
+        </tr> -->
 
       </tbody>
     </table>

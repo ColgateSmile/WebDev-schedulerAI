@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Set session for user authentication
             $_SESSION['user'] = true;
             $_SESSION['username'] = $row['firstname'];
+            $_SESSION['email'] = $row['email'];
 
             // If "Remember me" is checked, set a cookie
             if ($rememberMe) {
