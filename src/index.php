@@ -106,16 +106,16 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
             $result = $stmt2->get_result();
             echo '<td>';
             $isFirst = true;
-            foreach ($result as $row) {
+            foreach ($result as $row1) {
                 if (!$isFirst) {
                     echo ", ";
                 } else {
                     $isFirst = false;
                 }
-                echo $row['firstname'] . " " . $row['lastname'];
+                echo $row1['firstname'] . " " . $row1['lastname'];
             }
             echo '</td>';
-            echo "<td><a href='SchdualingPage.php' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
+            echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
           }
           ?>
       </tbody>
