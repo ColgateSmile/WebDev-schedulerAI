@@ -1,47 +1,52 @@
-<?php require_once "db.php"; ?>
+<?php 
+session_start();
+require_once "db.php"; 
 
-<?php
 if (isset($_POST['submit'])) {
     // Retrieve form data
     $firstName = $_POST['first-name'];
     $lastName = $_POST['last-name'];
     $email = $_POST['email'];
     $formPassword = $_POST['password'];
+    $confirmPassword = $_POST['confirm-password'];
 
+    // Check if the passwords match
+    if ($formPassword !== $confirmPassword) {
+        $_SESSION['error'] = "Passwords do not match";
+    }
     // Check if the email is valid
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email address";
-        exit;
+    else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Invalid email address";
     }
+    else {
+        // Check if the email already exists in the database
+        $sql_check_email = "SELECT COUNT(*) AS count FROM `users` WHERE `email`='$email'";
+        $result = mysqli_query($conn, $sql_check_email);
+        $row = mysqli_fetch_assoc($result);
+        if ($row['count'] > 0) {
+            $_SESSION['error'] = "Email address already exists";
+        }
+        else {
+            // Prepare and execute the SQL query
+            $sql = "INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$lastName', '$email', '$formPassword')";
 
-    // Check if the email already exists in the database
-    $sql_check_email = "SELECT COUNT(*) AS count FROM `users` WHERE `email`='$email'";
-    $result = mysqli_query($conn, $sql_check_email);
-    $row = mysqli_fetch_assoc($result);
-    if ($row['count'] > 0) {
-        echo "Email address already exists";
-        exit;
-    }
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
 
-    // Prepare and execute the SQL query
-    $sql = "INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES ('$firstName', '$lastName', '$email', '$formPassword')";
-
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
-    if ($conn->query($sql) === TRUE) {
-        echo "User registered successfully";
-        echo "<script>window.location.href = 'LogIn.php';</script>";
-        exit;
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+            if ($conn->query($sql) === TRUE) {
+                echo "User registered successfully";
+                echo "<script>window.location.href = 'LogIn.php';</script>";
+                exit;
+            } else {
+                $_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +58,6 @@ if (isset($_POST['submit'])) {
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/SignUp_Style.css">
 </head>
-
 <body>
   <header class="header">
     <a class="text-center">Sign Up for SchedulerAI</a>
@@ -76,15 +80,16 @@ if (isset($_POST['submit'])) {
             <div class="form-group">
               <label for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-              <span id="error-message" style="color: red;"></span>
+              <span id="error-message" style="color: red;"><?php if (isset($_SESSION['error'])) { echo $_SESSION['error']; unset($_SESSION['error']); } ?></span>
             </div>
             <div class="form-group">
               <label for="password">Password <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Password must be at least 10 characters long and contain at least one number, one letter, and one symbol (!@#$%^&*)"></i></label>
               <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-              <div class="password-strength-indicator">
-                <div class="password-strength-bar"></div>
-                <div id="password-strength-text"></div>
-              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
+              <span id="password-error-message" style="color: red;"></span>
             </div>
             <button type="submit" class="btn btn-primary" name="submit">Sign Up</button>
           </form>
@@ -106,6 +111,24 @@ if (isset($_POST['submit'])) {
 
   <!-- Custom JS -->
   <script src="scripts/signup.js"></script>
-</body>
 
+  <!-- Password validation -->
+  <script>
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm-password');
+    const errorMessage = document.getElementById('password-error-message');
+
+    function validatePasswords() {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.textContent = 'Passwords do not match';
+      } else {
+        errorMessage.textContent = '';
+      }
+    }
+
+    password.addEventListener('input', validatePasswords);
+    confirmPassword.addEventListener('input', validatePasswords);
+  </script>
+
+</body>
 </html>
