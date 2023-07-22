@@ -26,16 +26,14 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">SchedulerAI</a>
+    <span class="navbar-text ml-auto">
+      Welcome, <?php echo $_SESSION['username'] ?> <!-- Display the user's name -->
+    </span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
-        <li>
-          <span class="navbar-text ml-auto">
-            Welcome, <?php echo $_SESSION['username'] ?> <!-- Display the user's name -->
-          </span>
-        </li>
         <li class="nav-item active">
           <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
         </li>
@@ -106,35 +104,20 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
             $stmt2->bind_param('i', $row['id']);
             $stmt2->execute();
             $result = $stmt2->get_result();
-            echo "<td>";
-            foreach($result as $row)
-              echo $row['firstname'] . " " . $row['lastname'] . ",";
-            echo "</td>";
+            echo '<td>';
+            $isFirst = true;
+            foreach ($result as $row) {
+                if (!$isFirst) {
+                    echo ", ";
+                } else {
+                    $isFirst = false;
+                }
+                echo $row['firstname'] . " " . $row['lastname'];
+            }
+            echo '</td>';
             echo "<td><a href='SchdualingPage.php' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
           }
           ?>
-          <!-- <td>kids Schedule</td>
-          <td>May 6, 2023</td>
-          <td>user 1, User 2</td>
-          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
-
-        </tr>
-        <tr>
-          <td>fixing around the house</td>
-          <td>May 6, 2023</td>
-          <td>User 3, User 4</td>
-          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
-
-        </tr>
-
-        <tr>
-          <td>Workout</td>
-          <td>May 6, 2023</td>
-          <td>User 5, User 6</td>
-          <td><a href="SchdualingPage.php" class="btn btn-primary btn-view-list">View List</a></td>
-
-        </tr> -->
-
       </tbody>
     </table>
     <div class="text-center">
