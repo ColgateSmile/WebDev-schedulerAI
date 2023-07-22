@@ -108,6 +108,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
               </tr>
             </thead>
             <tbody>
+              <?php
+                if (isset($_GET['listid'])) {
+                  $listid = $_GET['listid'];
+                  $_SESSION['listid'] = $listid;              
+                  echo "Please implement me, list-id is: " . $_GET['listid'];
+              }
+              ?>
               <tr>
                 <th scope="row">1</th>
                 <td>Assignment 1</td>
