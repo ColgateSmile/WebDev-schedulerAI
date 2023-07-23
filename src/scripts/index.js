@@ -7,18 +7,18 @@ var time = now.toLocaleTimeString();
 document.getElementById("datetime").innerHTML = date;
 
 function searchUsers() {
-    const searchInput = document.getElementById("userSearch").value.toLowerCase();
-    const userList = document.getElementById("userList");
-    const users = userList.getElementsByClassName("form-check");
+  const searchInput = document.getElementById("userSearch").value.toLowerCase();
+  const userList = document.getElementById("userList");
+  const users = userList.getElementsByClassName("form-check");
 
-    for (const user of users) {
-      const username = user.textContent.toLowerCase();
-      if (username.includes(searchInput)) {
-        user.style.display = "block";
-      } else {
-        user.style.display = "none";
-      }
+  for (const user of users) {
+    const username = user.getElementsByTagName("label")[0].textContent.toLowerCase();
+    if (username.includes(searchInput)) {
+      user.classList.remove("d-none");
+    } else {
+      user.classList.add("d-none");
     }
+  }
 }
 
 // JavaScript function to handle list creation

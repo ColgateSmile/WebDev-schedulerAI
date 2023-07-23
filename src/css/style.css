@@ -149,3 +149,6 @@ body {
   }
   
   
+  #userList {
+    max-height: 220px;
+  }

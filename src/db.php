@@ -62,20 +62,28 @@ if (mysqli_query($conn, $sql)) {
 }
 
 // Insert three users with the same password '123test' if they don't already exist
+$users_tbl = "";
+$users = "";
+$last_idx = 1000;
+for ($i=1; $i < $last_idx+1; $i++) { 
+    if ($i < $last_idx){
+        $users_tbl .= "SELECT 'User', '" . $i . "', 'user" . $i . "@test.test', 'test123' UNION ALL ";
+        $users .= "'user" . $i . "@test.test',";
+    }
+    if ($i == $last_idx) {
+        $users_tbl .= "SELECT 'User', '" . "$i" . "', 'user" . $i . "@test.test', 'test123'";
+        $users .= "'user" . $i . "@test.test'";
+    }
+}
 $sql = "
 INSERT IGNORE INTO `users` (`firstname`, `lastname`, `email`, `password`)
 SELECT * FROM (
-    SELECT 'User', '1', 'user1@test.test', 'test123'
-    UNION ALL
-    SELECT 'User', '2', 'user2@test.test', 'test123'
-    UNION ALL
-    SELECT 'User', '3', 'user3@test.test', 'test123'
+    $users_tbl
 ) AS temp
 WHERE NOT EXISTS (
-    SELECT 1 FROM `users` WHERE `email` IN ('user1@test.test', 'user2@test.test', 'user3@test.test')
+    SELECT 1 FROM `users` WHERE `email` IN ($users)
 );
 ";
-
 if (mysqli_query($conn, $sql)) {
     // echo 'Users inserted successfully';
 } else {

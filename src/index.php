@@ -92,7 +92,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
 
           foreach($result as $row){
             echo "<tr><td>" . $row['list_name'] . "</td>" .
-                 "<td>" . $row['created_at'] . "</td>";
+                 "<td>" . date("M jS, Y",strtotime($row['created_at'])) . "</td>";
           
             $sql = "
               SELECT u.firstname, u.lastname
@@ -148,8 +148,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
             </div>
             <div class="form-group">
               <label for="listUsers">Permitted Users:</label>
-              <div id="userList">
-              <?php
+              <input type="text" class="form-control" id="userSearch" oninput="searchUsers()" placeholder="Search users">
+              <div id="userList" style="max-height: 220px; overflow-y: auto;">
+                <?php
                 $sql = "SELECT email, firstname, lastname FROM users WHERE email <> ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $_SESSION['email']);
@@ -162,19 +163,18 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
                     $user_email = $row['email'];
                     echo '<div class="form-check">';
                     echo '<input class="form-check-input" type="checkbox" name="listUsers[]" value="' . $user_email . '" id="user_' . $user_email . '">';
-                    echo '<label class="form-check-label" for="user_' . $user_email . '">' . $username . " - " . $user_email .'</label>';
+                    echo '<label class="form-check-label">' . $username . " - " . $user_email .'</label>';
                     echo '</div>';
                   }
                 }
-              // $conn->close();
-              ?>
+                ?>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-primary" onclick="createList()">Create</button>
         </div>
       </div>
     </div>
