@@ -111,28 +111,32 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
               <?php
                 if (isset($_GET['listid'])) {
                   $listid = $_GET['listid'];
-                  $_SESSION['listid'] = $listid;              
-                  echo "Please implement me, list-id is: " . $_GET['listid'];
+                  require_once "./db.php";
+                  $sql = "
+                    SELECT t.id, t.name ,t.description, t.due_date, u.firstname, u.lastname, t.completed
+                    FROM tasks t
+                    JOIN lists l ON t.list_id = l.id
+                    JOIN users u ON u.id = t.user_in_charge
+                    WHERE l.id = ?
+                  ";
+                  $stmt1 = $conn->prepare($sql);
+                  $stmt1->bind_param('i',$listid);
+                  $stmt1->execute();
+                  $result = $stmt1->get_result();
+
+                  foreach($result as $row){
+                    echo "<tr><td>" . $row['id'] . "</td>" .
+                        "<td>" . $row['name'] . "</td>" .
+                        "<td>" . $row['description'] . "</td>" .
+                        "<td>" . date("M jS, Y",strtodate($row['due_date'])) . "</td>" .
+                        "<td>" . $row['completed'] . "</td>" .
+                        "<td>" . "delete button here". "</td>";
+                  }
               }
               ?>
-              <tr>
-                <th scope="row">1</th>
-                <td>Assignment 1</td>
-                <td>Description 1</td>
-                <td>2023-05-05</td>
-                <td>User 1</td>
-                <td class="text-center"><input type="checkbox" class="form-check-input"></td>
-                <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt"></i></button></td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Assignment 2</td>
-                <td>Description 2</td>
-                <td>2023-05-05</td>
-                <td>User 2</td>
-                <td class="text-center"><input type="checkbox" class="form-check-input"></td>
-                <td><button type="button" class="btn btn-danger btn-sm delete-btn"><i class="fas fa-trash-alt"></i></button></td>
-              </tr>
+          <?php 
+          
+          ?>
               <!-- Add more assignment rows here -->
             </tbody>
           </table>
