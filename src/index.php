@@ -70,7 +70,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
         </tr>
       </thead>
       <tbody>
-        <tr>
           <?php 
           require_once "./db.php";
           $sql = "
