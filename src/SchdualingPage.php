@@ -47,7 +47,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
       position: absolute;
       top: 50%;
       left: 0;
-      border-bottom: 1px solid #111;
+      border-bottom: 3px solid #007bff;
       width: 100%;
     }
   </style>
