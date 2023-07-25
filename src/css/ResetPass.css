@@ -1,0 +1,102 @@
+/* Reset Password Page Styles */
+.reset-password-container {
+    border: 2px solid blue;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.reset-password-container label {
+    font-weight: bold;
+}
+
+.reset-password-container .form-group {
+    display: none;
+}
+
+.reset-password-container .form-group:visible {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+}
+
+.reset-password-container .form-group:visible:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+}
+
+.reset-password-container .form-group:visible + .form-group:before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.reset-password-container .form-group:after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    width: 4px;
+    height: 8px;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    border-color: #fff;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+.reset-password-container .form-group:visible + .form-group:after {
+    opacity: 1;
+}
+
+.alert {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-danger i {
+    margin-right: 5px;
+}
+
+button, input[type="submit"] {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: right;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition-duration: 0.4s;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #007bff;
+}
+
+.reset-password-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reset-password-container button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
