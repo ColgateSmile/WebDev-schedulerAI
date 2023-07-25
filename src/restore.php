@@ -1,32 +1,6 @@
 <?php
 require_once "./db.php";
 
-<<<<<<< Updated upstream
-  // Validate the email (you can add more validation if needed)
-  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $error = "Invalid email format";
-  } else {
-    // Generate a random token
-    $token = bin2hex(random_bytes(32));
-
-    // Store the token and email in a database or file
-    // This is just a basic example, you should use a secure method to store the token and email
-    // For database storage, you can use a library like PDO or mysqli
-
-    // Send the reset link to the user's email
-    $resetLink = "https://example.com/reset_password.php?token=" . $token;
-    $message = "Click the following link to reset your password: $resetLink";
-    $subject = "Password Reset";
-    // Replace <sender_email> with the email address from which you want to send the email
-    $headers = "From: <sender_email>";
-
-    // Uncomment the following line to send the email (make sure your server is configured to send emails)
-    // mail($email, $subject, $message, $headers);
-
-    // Display a success message
-    $success = "Password reset link has been sent to your email";
-  }
-=======
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
 
@@ -50,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $success = "Password reset link has been sent to your email";
         }
     }
->>>>>>> Stashed changes
 }
 ?>
 
@@ -66,25 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" type="text/css" href="css/ResetPass.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-l3UDC6yX4dH47gX2D9GSuMWEV4gK+lfhZ9elOqI9b94Nt1xrgDdpnXrK3y4EMIEiehTvsJlYdoS35f5db7Dy4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+
+
+
 </head>
 <body>
-<<<<<<< Updated upstream
-  <h2>Reset Password</h2>
-  
-  <?php if (isset($error)) { ?>
-    <p><?php echo $error; ?></p>
-  <?php } ?>
-  
-  <?php if (isset($success)) { ?>
-    <p><?php echo $success; ?></p>
-  <?php } ?>
-  
-  <form method="post" action="">
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
-    <input type="submit" value="Reset Password">
-  </form>
-=======
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand">SchedulerAI</a>
     </nav>
@@ -124,6 +83,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
->>>>>>> Stashed changes
 </body>
 </html>
