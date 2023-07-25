@@ -132,7 +132,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
                           "<td>" . $row['description'] . "</td>" .
                           "<td>" . date("M jS, Y", strtotime($row['due_date'])) . "</td>" .
                           "<td>" . $row['firstname'] . " " . $row['lastname'] . "</td>" .
-                          "<td class='text-center'><input type='checkbox' class='form-check-input' value='" . $row['completed'] . "' " . ($row['completed'] ? 'checked' : '') . "></td>" .
+                          "<td class='text-center'>
+                          <input type='checkbox' class='form-check-input' data-task-completed='" . $row['completed'] . "' " . ($row['completed'] ? 'checked' : '') . ">
+                          </td>" . 
                           "<td><button type='button' class='btn btn-danger btn-sm delete-btn'><i class='fas fa-trash-alt'></i></button></td>" .
                           "</tr>";
                   }
@@ -235,8 +237,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
       data: { taskId: taskId, completed: isChecked },
       success: function() {
         // If the request is successful, update the table row class based on the completed status
-        $("#task-" + taskId).toggleClass("completed-task", isChecked);
-        location.reload();
       },
       error: function() {
         alert("An error occurred while updating the task status.");
