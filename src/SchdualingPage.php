@@ -231,6 +231,16 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6Vo+D6clDnjf4M6Aj4gx5Pi+sf4+JbB" crossorigin="anonymous"></script>
     <!-- Add this script block at the bottom of your HTML, before the closing </body> tag -->
 <script>
+  $("#minimize-btn").click(function() {
+    $(".add-task-section").slideUp();
+    $(".toggle-section").html("<button type='button' class='btn btn-primary' id='Add_Assignment-btn'>Add Assignment</button>");
+  });
+
+  // Revert button click event
+  $(document).on("click", "#Add_Assignment-btn", function() {
+      $(".add-task-section").slideDown();
+      $(".toggle-section").empty(); // Remove existing buttons
+  });
   // Function to handle delete button click
   function handleDeleteButtonClick(taskId) {
     // Show a confirmation dialog before deleting the task
