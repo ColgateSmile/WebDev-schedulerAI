@@ -1,32 +1,30 @@
 <?php
 require_once "./db.php";
 
-<<<<<<< Updated upstream
-  // Validate the email (you can add more validation if needed)
-  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $error = "Invalid email format";
-  } else {
-    // Generate a random token
-    $token = bin2hex(random_bytes(32));
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
 
-    // Store the token and email in a database or file
-    // This is just a basic example, you should use a secure method to store the token and email
-    // For database storage, you can use a library like PDO or mysqli
-
-    // Send the reset link to the user's email
-    $resetLink = "https://example.com/reset_password.php?token=" . $token;
-    $message = "Click the following link to reset your password: $resetLink";
-    $subject = "Password Reset";
-    // Replace <sender_email> with the email address from which you want to send the email
-    $headers = "From: <sender_email>";
-
-    // Uncomment the following line to send the email (make sure your server is configured to send emails)
-    // mail($email, $subject, $message, $headers);
-
-    // Display a success message
-    $success = "Password reset link has been sent to your email";
-  }
-
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format";
+    } else {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        if (!$user) {
+            $error = "Email doesn't exist";
+        } else {
+            $token = bin2hex(random_bytes(32));
+            $resetLink = "https://example.com/reset_password.php?token=" . $token;
+            $message = "Click the following link to reset your password: $resetLink";
+            $subject = "Password Reset";
+            $headers = "From: <sender_email>";
+            $success = "Password reset link has been sent to your email";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,14 +41,44 @@ require_once "./db.php";
 
 </head>
 <body>
-<<<<<<< Updated upstream
-  <h2>Reset Password</h2>
-  
-  
-  <form method="post" action="">
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
-    <input type="submit" value="Reset Password">
-  </form>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand">SchedulerAI</a>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <div class="reset-password-container">
+                    <h1>Reset Password</h1>
+                    <form method="post" action="">
+                        <label>Please enter your account email:</label><br>
+                        <input type="email" name="email" required><br><br>
+                        <input type="submit" value="Reset Password">
+                    </form>
+                    <?php if (isset($error)) { ?>
+                        <p><?php echo $error; unset($error)?></p>
+                    <?php } ?>
+                    <?php if (isset($success)) { ?>
+                        <p><?php echo $success; unset($success)?></p>
+                    <?php } ?>
+                    <button onclick="window.location.href='LogIn.php'">Back to Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2023 SchedulerAI</p>
+                </div>
+                <div class="col-md-6 text-bottom">
+                    <p id="datetime"></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGi/7SfCypdtkWr+0nx384Zk+5T0Ukre/WRS" crossorigin="anonymous"></script>
 </body>
 </html>
