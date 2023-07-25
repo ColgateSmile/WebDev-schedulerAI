@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
+
+    if (!empty($email) && !empty($password)) {
+
     // Perform database validation here
     // Replace the database connection details with your own
     $server_xampp = 'localhost';
@@ -56,8 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($password === $dbPassword) {
             // Set session for user authentication
             $_SESSION['user'] = true;
-            $_SESSION['username'] = $row['firstname'] . " " . $row['lastname'];
-            $_SESSION['email'] = $row['email'];
+            $_SESSION['username'] = $row['firstname'];
 
             // If "Remember me" is checked, set a cookie
             if ($rememberMe) {
