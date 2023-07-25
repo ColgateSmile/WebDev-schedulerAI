@@ -26,6 +26,30 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     .add-task-section button {
       margin-right: 40px;
     }
+    input:date:before {
+      content: attr(data-date);
+      display: inline-block;
+      color: #fff;
+      background: #337ab7;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      position: relative;
+      padding: 5px 10px;
+    }
+    tr.strikeout td:before {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      border-bottom: 1px solid #111;
+      width: 100%;
+    }
   </style>
 </head>
 
@@ -74,7 +98,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
             </div>
             <div class="form-group">
                 <label for="due-date">Due Date:</label>
-                <input type="date" class="form-control" id="due-date" name="due-date" required>
+                <input type="date" class="form-control" id="due-date" name="due-date"
+                       data-date="" data-date-format="DD.MM.YYYY" value="2015-08-09" required>
             </div>
             <div class="form-group">
                 <label for="user-in-charge">User in Charge: (email)</label>
@@ -126,7 +151,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
                   $result = $stmt1->get_result();
 
                   foreach ($result as $row) {
-                      echo "<tr id='task-". $row['id'] . "' data-task-id='" . $row['id'] . "'>" .
+                    $class = $row['completed'] ? 'class=strikeout ' : '';
+                    $tr = "<tr " . $class . "id='task-". $row['id'] . "' data-task-id='" . $row['id'] . "'>";
+                    echo  $tr .
                           "<td>" . $row['id'] . "</td>" .
                           "<td>" . $row['name'] . "</td>" .
                           "<td>" . $row['description'] . "</td>" .
@@ -237,6 +264,11 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
       data: { taskId: taskId, completed: isChecked },
       success: function() {
         // If the request is successful, update the table row class based on the completed status
+        if (isChecked) {
+          $("#task-" + taskId).addClass("strikeout");
+        } else {
+          $("#task-" + taskId).removeClass("strikeout");
+        }
       },
       error: function() {
         alert("An error occurred while updating the task status.");
@@ -256,6 +288,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     var isChecked = $(this).prop("checked");
     handleCompleteCheckboxChange(taskId, isChecked);
   });
+  $("input").on("change", function() {
+    this.setAttribute(
+        "data-date",
+        moment(this.value, "YYYY-MM-DD")
+        .format( this.getAttribute("data-date-format") )
+    )
+}).trigger("change")
 </script>
 
 </body>
