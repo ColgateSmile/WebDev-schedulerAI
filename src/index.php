@@ -70,7 +70,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
         </tr>
       </thead>
       <tbody>
-        <tr>
           <?php 
           require_once "./db.php";
           $sql = "
@@ -92,7 +91,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
 
           foreach($result as $row){
             echo "<tr><td>" . $row['list_name'] . "</td>" .
-                 "<td>" . $row['created_at'] . "</td>";
+                 "<td>" . date("M jS, Y",strtotime($row['created_at'])) . "</td>";
           
             $sql = "
               SELECT u.firstname, u.lastname
@@ -106,16 +105,16 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
             $result = $stmt2->get_result();
             echo '<td>';
             $isFirst = true;
-            foreach ($result as $row) {
+            foreach ($result as $row1) {
                 if (!$isFirst) {
                     echo ", ";
                 } else {
                     $isFirst = false;
                 }
-                echo $row['firstname'] . " " . $row['lastname'];
+                echo $row1['firstname'] . " " . $row1['lastname'];
             }
             echo '</td>';
-            echo "<td><a href='SchdualingPage.php' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
+            echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
           }
           ?>
       </tbody>
@@ -143,14 +142,38 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
               <input type="text" class="form-control" id="listName">
             </div>
             <div class="form-group">
+              <label for="userSearch">Search Users:</label>
+              <input type="text" class="form-control" id="userSearch" name="userSearch" oninput="searchUsers()">
+            </div>
+            <div class="form-group">
               <label for="listUsers">Permitted Users:</label>
-              <input type="text" class="form-control" id="listUsers">
+              <input type="text" class="form-control" id="userSearch" oninput="searchUsers()" placeholder="Search users">
+              <div id="userList" style="max-height: 220px; overflow-y: auto;">
+                <?php
+                $sql = "SELECT email, firstname, lastname FROM users WHERE email <> ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $_SESSION['email']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    $username = $row['firstname'] . " " . $row['lastname'];
+                    $user_email = $row['email'];
+                    echo '<div class="form-check">';
+                    echo '<input class="form-check-input" type="checkbox" name="listUsers[]" value="' . $user_email . '" id="user_' . $user_email . '">';
+                    echo '<label class="form-check-label">' . $username . " - " . $user_email .'</label>';
+                    echo '</div>';
+                  }
+                }
+                ?>
+              </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-primary" onclick="createList()">Create</button>
         </div>
       </div>
     </div>
