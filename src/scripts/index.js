@@ -21,15 +21,50 @@ function searchUsers() {
   }
 }
 
-// JavaScript function to handle list creation
+// Function to handle form submission when the "Create" button is clicked
 function createList() {
-    const listName = document.getElementById("listName").value;
-    const selectedParticipants = Array.from(document.querySelectorAll("input[name='listUsers[]']:checked")).map(checkbox => checkbox.value);
+  const listName = document.getElementById("listName").value;
+  const selectedParticipants = Array.from(document.querySelectorAll("input[name='listUsers[]']:checked")).map(checkbox => checkbox.value);
 
-    // Add your logic to handle list creation with the selected participants
-    // You can use the 'listName' and 'selectedParticipants' variables to send data to your server using AJAX, for example.
-    // For simplicity, I'm not including the AJAX part here.
-    console.log("List Name:", listName);
-    console.log("Selected Participants:", selectedParticipants);
-    // Add logic here to create the list and add the selected participants to it.
+  // Create a FormData object to store the form data
+  const formData = new FormData();
+  formData.append("listName", listName);
+  selectedParticipants.forEach(participant => formData.append("listUsers[]", participant));
+
+  // Send the form data to the server using Fetch API
+  fetch("create_list.php", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Create a new row for the table
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td>${data.list_name}</td>
+        <td>${data.created_at}</td>
+        <td>${data.permitted_users}</td>
+        <td><a href='SchdualingPage.php?listid=${data.list_id}' class='btn btn-primary btn-view-list'>View List</a></td>
+      `;
+
+      // Append the new row to the table body
+      const assignmentListsTable = document.getElementById("assignmentListsTable");
+      assignmentListsTable.appendChild(newRow);
+
+      // Clear the form fields
+      document.getElementById("listName").value = '';
+      const checkboxes = document.querySelectorAll("input[name='listUsers[]']:checked");
+      checkboxes.forEach(checkbox => checkbox.checked = false);
+    } else {
+      alert("Failed to create the list. Please try again.");
+    }
+
+    // Hide the modal after form submission
+    $("#createListModal").modal("hide");
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    alert("An error occurred while creating the list. Please try again.");
+  });
 }

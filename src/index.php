@@ -7,6 +7,60 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     header("Location: LogIn.php");
     exit();
 }
+
+require_once "./db.php";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the form was submitted
+    if (isset($_POST['listName']) && isset($_POST['listUsers'])) {
+        // Get the list name and user emails from the form data
+        $listName = $_POST['listName'];
+        $listUsers = $_POST['listUsers'];
+
+        // Get the ID of the user creating the list
+        if (!isset($_SESSION['user_id'])) {
+            // Handle the situation where user_id is not set in the session (you need to replace this with how you manage user authentication and session data)
+            // For example, if you use a different key for user_id in the session, replace 'user_id' with the correct key.
+            // You might also need to adjust how you retrieve the user_id depending on your authentication mechanism.
+            die('Error: User ID not found. Please handle user authentication and session data correctly.');
+        }
+        $userId = $_SESSION['user_id'];
+
+        // Insert the new list into the database
+        $sql = "INSERT INTO lists (name, created_by) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('si', $listName, $userId);
+        $stmt->execute();
+
+        // Get the ID of the newly inserted list
+        $listId = $conn->insert_id;
+
+        // Insert the participants into the database
+        $sql = "INSERT INTO participants (list_id, user_id) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ii', $listId, $participantId);
+
+        // Insert each selected participant into the database
+        foreach ($listUsers as $userEmail) {
+            $sql = "SELECT id FROM users WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $userEmail);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $participantId = $row['id'];
+
+            // Insert the participant into the participants table
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ii', $listId, $participantId);
+            $stmt->execute();
+        }
+
+        // Redirect to the index page to see the updated list table
+        header("Location: index.php");
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,70 +114,69 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
   <h1 class="text-center stylish-header">Assignment Lists</h1>
 
   <div class="assignment-lists">
-    <table class="table table-bordered bg-light">
-      <thead>
-        <tr>
-          <th>List Name</th>
-          <th>Creation Date</th>
-          <th>Permitted Users</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <?php 
-          require_once "./db.php";
-          $sql = "
-            SELECT l.id, l.name AS list_name, l.created_at
-            FROM lists l
-            JOIN users u ON l.created_by = u.id
-            WHERE u.email = ?
-            UNION
-            SELECT l.id, l.name AS list_name, l.created_at
-            FROM lists l
-            JOIN participants p ON l.id = p.list_id
-            JOIN users u ON p.user_id = u.id
-            WHERE u.email = ?;
-          ";
-          $stmt1 = $conn->prepare($sql);
-          $stmt1->bind_param('ss', $_SESSION['email'], $_SESSION['email']);
-          $stmt1->execute();
-          $result = $stmt1->get_result();
+  <table class="table table-bordered bg-light">
+    <thead>
+      <tr>
+        <th>List Name</th>
+        <th>Creation Date</th>
+        <th>Permitted Users</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="assignmentListsTable"> <!-- Add id attribute to the table body -->
+      <?php 
+      require_once "./db.php";
+      $sql = "
+        SELECT l.id, l.name AS list_name, l.created_at
+        FROM lists l
+        JOIN users u ON l.created_by = u.id
+        WHERE u.email = ?
+        UNION
+        SELECT l.id, l.name AS list_name, l.created_at
+        FROM lists l
+        JOIN participants p ON l.id = p.list_id
+        JOIN users u ON p.user_id = u.id
+        WHERE u.email = ?;
+      ";
+      $stmt1 = $conn->prepare($sql);
+      $stmt1->bind_param('ss', $_SESSION['email'], $_SESSION['email']);
+      $stmt1->execute();
+      $result = $stmt1->get_result();
 
-          foreach($result as $row){
-            echo "<tr><td>" . $row['list_name'] . "</td>" .
-                 "<td>" . date("M jS, Y",strtotime($row['created_at'])) . "</td>";
-          
-            $sql = "
-              SELECT u.firstname, u.lastname
-              FROM participants p
-              JOIN users u ON p.user_id = u.id
-              WHERE p.list_id = ?;
-            ";
-            $stmt2 = $conn->prepare($sql);
-            $stmt2->bind_param('i', $row['id']);
-            $stmt2->execute();
-            $result = $stmt2->get_result();
-            echo '<td>';
-            $isFirst = true;
-            foreach ($result as $row1) {
-                if (!$isFirst) {
-                    echo ", ";
-                } else {
-                    $isFirst = false;
-                }
-                echo $row1['firstname'] . " " . $row1['lastname'];
+      foreach($result as $row){
+        echo "<tr><td>" . $row['list_name'] . "</td>" .
+             "<td>" . date("M jS, Y",strtotime($row['created_at'])) . "</td>";
+      
+        $sql = "
+          SELECT u.firstname, u.lastname
+          FROM participants p
+          JOIN users u ON p.user_id = u.id
+          WHERE p.list_id = ?;
+        ";
+        $stmt2 = $conn->prepare($sql);
+        $stmt2->bind_param('i', $row['id']);
+        $stmt2->execute();
+        $result = $stmt2->get_result();
+        echo '<td>';
+        $isFirst = true;
+        foreach ($result as $row1) {
+            if (!$isFirst) {
+                echo ", ";
+            } else {
+                $isFirst = false;
             }
-            echo '</td>';
-            echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
-          }
-          ?>
-      </tbody>
-    </table>
-    <div class="text-center">
-      <button type="button" class="btn btn-primary btn-create-list" data-toggle="modal" data-target="#createListModal">Create New List</button>
-    </div>
+            echo $row1['firstname'] . " " . $row1['lastname'];
+        }
+        echo '</td>';
+        echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
+      }
+      ?>
+    </tbody>
+  </table>
+  <div class="text-center">
+    <button type="button" class="btn btn-primary btn-create-list" data-toggle="modal" data-target="#createListModal">Create New List</button>
   </div>
+</div>
 
   <!-- Create List Modal -->
   <div class="modal fade" id="createListModal" tabindex="-1" role="dialog" aria-labelledby="createListModalLabel" aria-hidden="true">
@@ -212,6 +265,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-7jZacXBD4/QMz8cQ4m6Wpl7gvp/1O/Bd++BvTwG/CSLAoWTXTf7kH3RswS8avhSo" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 
   <script src="scripts/index.js"></script>
 </body>
