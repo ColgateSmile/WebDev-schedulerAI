@@ -7,6 +7,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     header("Location: LogIn.php");
     exit();
 }
+if(isset($_GET['listid'])){
+  $_SESSION['listid'] = $_GET['listid'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -189,15 +192,15 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
           
                   if (!$user) {
                       $error = "User with email '$userEmail' not found.";
+                      echo $error;
                   } else {
                       // User found, insert the assignment into the tasks table
-                      $listId = 1; // Sample list ID, replace this with the actual value
+                      $listId = $_SESSION['listid'];
+                      echo $listId;
                       $userId = $user['id'];
                       $stmt = $conn->prepare("INSERT INTO tasks (list_id, name, description, due_date, user_in_charge) VALUES (?, ?, ?, ?, ?)");
                       $stmt->bind_param("isssi", $listId, $assignmentName, $assignmentDescription, $dueDate, $userId);
                       $stmt->execute();
-                      $stmt->close();
-                      $conn->close();
           
                       // Redirect back to the same page to refresh the list
                       echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";

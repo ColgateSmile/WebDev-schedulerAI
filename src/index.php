@@ -177,35 +177,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           include_once "./db.php";
           $listName = $_POST["listName"];
           $participants = $_POST["usersList"];
-
+          $created_at = date("Y-m-d H:i:s");
       
           // Validate form inputs
-          if (empty($assignmentName) || empty($assignmentDescription) || empty($dueDate) || empty($userInCharge)) {
-              $error = "Please enter all the fields.";
+          if (empty($listName)) {
+              $error = "Please enter a list name.";
           } else {
-            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-            $stmt->bind_param("s", $userInCharge);
+            // Insert the new list into the database
+            $sql = "INSERT INTO lists (name, created_at ,created_by) VALUES (?,?,?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssi', $listName, $created_at, $_SESSION['user_id']);
             $stmt->execute();
-            $result = $stmt->get_result();
-            $user = $result->fetch_assoc();
-            $stmt->close();
-    
-            if (!$user) {
-                $error = "User with email '$userEmail' not found.";
-            } else {
-                // User found, insert the assignment into the tasks table
-                $listId = 1; // Sample list ID, replace this with the actual value
-                $userId = $user['id'];
-                $stmt = $conn->prepare("INSERT INTO tasks (list_id, name, description, due_date, user_in_charge) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("isssi", $listId, $assignmentName, $assignmentDescription, $dueDate, $userId);
-                $stmt->execute();
-                $stmt->close();
-                $conn->close();
-    
-                // Redirect back to the same page to refresh the list
-                echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
-                exit();
+            $listId = $conn->insert_id;
+            $sql = "INSERT INTO participants (list_id, user_id) VALUES (?, ?)";
+            $stmt = $conn->prepare($sql);
+            foreach($participants as $participantId){
+              $stmt->bind_param('ii', $listId, $participantId);
+              $stmt->execute();
             }
+            $stmt->bind_param('ii', $listId, $_SESSION['user_id']);
+            $stmt->execute();
+            echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
+            exit();
           }
         }
         ?>
