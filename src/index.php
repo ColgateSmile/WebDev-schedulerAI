@@ -196,12 +196,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <input type="text" class="form-control" id="listName">
             </div>
             <div class="form-group">
-              <label for="userSearch">Search Users:</label>
-              <input type="text" class="form-control" id="userSearch" name="userSearch" oninput="searchUsers()">
+              <label for="userSearch">Search for a user:</label>
+              <input type="text" class="form-control" id="userSearch" name="userSearch" oninput="searchUsers()" placeholder="Search users">
             </div>
             <div class="form-group">
               <label for="listUsers">Permitted Users:</label>
-              <input type="text" class="form-control" id="userSearch" oninput="searchUsers()" placeholder="Search users">
               <div id="userList" style="max-height: 220px; overflow-y: auto;">
                 <?php
                 $sql = "SELECT email, firstname, lastname FROM users WHERE email <> ?";
