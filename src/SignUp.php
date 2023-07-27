@@ -10,12 +10,8 @@ if (isset($_POST['submit'])) {
     $formPassword = $_POST['password'];
     $confirmPassword = $_POST['confirm-password'];
 
-    // Check if the passwords match
-    if ($formPassword !== $confirmPassword) {
-        $_SESSION['error'] = "Passwords do not match";
-    }
     // Check if the email is valid
-    else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error'] = "Invalid email address";
     }
     else {
@@ -71,7 +67,7 @@ if (isset($_POST['submit'])) {
           <form id="signup-form" action="" method="POST">
             <div class="form-group">
               <label for="first-name">First Name</label>
-              <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Enter first name" required>
+              <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Enter first name"  required>
             </div>
             <div class="form-group">
               <label for="last-name">Last Name</label>
@@ -80,7 +76,6 @@ if (isset($_POST['submit'])) {
             <div class="form-group">
               <label for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-              <span id="error-message" style="color: red;"><?php if (isset($_SESSION['error'])) { echo $_SESSION['error']; unset($_SESSION['error']); } ?></span>
             </div>
             <div class="form-group">
               <label for="password">Password <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="Password must be at least 10 characters long and contain at least one number, one letter, and one symbol (!@#$%^&*)"></i></label>
@@ -90,6 +85,7 @@ if (isset($_POST['submit'])) {
               <label for="confirm-password">Confirm Password</label>
               <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
               <span id="password-error-message" style="color: red;"></span>
+              <span id="error-message" style="color: red;"><?php if (isset($_SESSION['error'])) { echo $_SESSION['error']; unset($_SESSION['error']); } ?></span>
             </div>
             <button type="submit" class="btn btn-primary" name="submit">Sign Up</button>
           </form>
