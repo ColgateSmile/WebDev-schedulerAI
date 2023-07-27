@@ -171,6 +171,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
       }
       ?>
+      <?php
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+          // Get form values
+          include_once "./db.php";
+          $listName = $_POST["listName"];
+          $participants = $_POST["usersList"];
+
+      
+          // Validate form inputs
+          if (empty($assignmentName) || empty($assignmentDescription) || empty($dueDate) || empty($userInCharge)) {
+              $error = "Please enter all the fields.";
+          } else {
+            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+            $stmt->bind_param("s", $userInCharge);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+            $stmt->close();
+    
+            if (!$user) {
+                $error = "User with email '$userEmail' not found.";
+            } else {
+                // User found, insert the assignment into the tasks table
+                $listId = 1; // Sample list ID, replace this with the actual value
+                $userId = $user['id'];
+                $stmt = $conn->prepare("INSERT INTO tasks (list_id, name, description, due_date, user_in_charge) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("isssi", $listId, $assignmentName, $assignmentDescription, $dueDate, $userId);
+                $stmt->execute();
+                $stmt->close();
+                $conn->close();
+    
+                // Redirect back to the same page to refresh the list
+                echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
+                exit();
+            }
+          }
+        }
+        ?>
     </tbody>
   </table>
   <div class="text-center">
@@ -190,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="modal-body">
           <!-- Add form elements for creating a new list -->
-          <form>
+          <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">
               <label for="listName">List Name:</label>
               <input type="text" class="form-control" id="listName">
@@ -226,7 +264,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="createList()">Create</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+          
         </div>
       </div>
     </div>
