@@ -108,6 +108,50 @@ if(isset($_GET['listid'])){
                 <label for="user-in-charge">User in Charge: (email)</label>
                 <input type="text" class="form-control" id="user-in-charge" name="user-in-charge" required>
             </div>
+            <?php
+              if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                // Get form values
+                include_once "./db.php";
+                $assignmentName = $_POST["assignment-name"];
+                $assignmentDescription = $_POST["assignment-description"];
+                $dueDate = $_POST["due-date"];
+                $userInCharge = $_POST["user-in-charge"];
+            
+                // Validate form inputs
+                if (empty($assignmentName) || empty($assignmentDescription) || empty($dueDate) || empty($userInCharge)) {
+                    $error = "Please enter all the fields.";
+                } else {
+                  $stmt = $conn->prepare("
+                  SELECT id 
+                  FROM users u
+                  JOIN participants p ON u.id = p.user_id
+                  WHERE email = ? AND list_id = ?
+                  ");
+                  $stmt->bind_param("si", $userInCharge, $_SESSION['listid']);
+                  $stmt->execute();
+                  $result = $stmt->get_result();
+                  $user = $result->fetch_assoc();
+                  $stmt->close();
+          
+                  if (!$user) {
+                      $error = "User with email '$userInCharge' not found in the list of participants!";
+                      echo '<p style="color:red;">' .$error . '</p>';
+                  } else {
+                      // User found, insert the assignment into the tasks table
+                      $listId = $_SESSION['listid'];
+                      echo $listId;
+                      $userId = $user['id'];
+                      $stmt = $conn->prepare("INSERT INTO tasks (list_id, name, description, due_date, user_in_charge) VALUES (?, ?, ?, ?, ?)");
+                      $stmt->bind_param("isssi", $listId, $assignmentName, $assignmentDescription, $dueDate, $userId);
+                      $stmt->execute();
+          
+                      // Redirect back to the same page to refresh the list
+                      echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
+                      exit();
+                  }
+                }
+              }
+              ?>
             <button type="submit" class="btn btn-primary">Add Assignment</button>
             <button type="button" class="btn btn-primary" id="minimize-btn">Minimize</button>
           </form>
@@ -168,45 +212,6 @@ if(isset($_GET['listid'])){
                           "<td><button type='button' class='btn btn-danger btn-sm delete-btn'><i class='fas fa-trash-alt'></i></button></td>" .
                           "</tr>";
                   }
-              }
-              ?>
-              <?php
-              if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                // Get form values
-                include_once "./db.php";
-                $assignmentName = $_POST["assignment-name"];
-                $assignmentDescription = $_POST["assignment-description"];
-                $dueDate = $_POST["due-date"];
-                $userInCharge = $_POST["user-in-charge"];
-            
-                // Validate form inputs
-                if (empty($assignmentName) || empty($assignmentDescription) || empty($dueDate) || empty($userInCharge)) {
-                    $error = "Please enter all the fields.";
-                } else {
-                  $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-                  $stmt->bind_param("s", $userInCharge);
-                  $stmt->execute();
-                  $result = $stmt->get_result();
-                  $user = $result->fetch_assoc();
-                  $stmt->close();
-          
-                  if (!$user) {
-                      $error = "User with email '$userEmail' not found.";
-                      echo $error;
-                  } else {
-                      // User found, insert the assignment into the tasks table
-                      $listId = $_SESSION['listid'];
-                      echo $listId;
-                      $userId = $user['id'];
-                      $stmt = $conn->prepare("INSERT INTO tasks (list_id, name, description, due_date, user_in_charge) VALUES (?, ?, ?, ?, ?)");
-                      $stmt->bind_param("isssi", $listId, $assignmentName, $assignmentDescription, $dueDate, $userId);
-                      $stmt->execute();
-          
-                      // Redirect back to the same page to refresh the list
-                      echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
-                      exit();
-                  }
-                }
               }
               ?>
               <!-- Add more assignment rows here -->
