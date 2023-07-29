@@ -20,24 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
-    // Perform database validation here
-    // Replace the database connection details with your own
-    $server_xampp = 'localhost';
-    $server_docker = 'db';
-    $username = 'root';
-    $db_password = '';
-    $database = '312148489_207037227';
-
-    // Create a new MySQLi object
-    $conn = new mysqli($server_xampp, $username, $db_password, $database);
-
-    // Check the connection
-    if ($conn->connect_error) {
-        $conn = new mysqli($server_docker, $username, $db_password, $database);
-        if ($conn->connect_error) {
-            die('Connection failed: ' . $conn->connect_error);
-        }
-    }
+    require_once './db.php';
 
     // Prepare and execute the query
     $stmt = $conn->prepare('SELECT * FROM users WHERE email = ?');
