@@ -125,7 +125,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
                 // Get the list name and user emails from the form data
                 $listName = $_POST['listName'];
                 $listUsers = $_POST['listUsers'];
-                $date = date("")
+                $date = date("");
         
                 // Get the ID of the user creating the list
                 if (!isset($_SESSION['user_id'])) {
@@ -134,8 +134,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
                     // You might also need to adjust how you retrieve the user_id depending on your authentication mechanism.
                     die('Error: User ID not found. Please handle user authentication and session data correctly.');
                 }
+
                 $userId = $_SESSION['user_id'];
-        
                 // Insert the new list into the database
                 $sql = "INSERT INTO lists (name, created_by) VALUES (?, ?)";
                 $stmt = $conn->prepare($sql);
