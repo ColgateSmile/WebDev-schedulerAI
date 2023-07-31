@@ -7,60 +7,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     header("Location: LogIn.php");
     exit();
 }
-
-require_once "./db.php";
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if the form was submitted
-    if (isset($_POST['listName']) && isset($_POST['listUsers'])) {
-        // Get the list name and user emails from the form data
-        $listName = $_POST['listName'];
-        $listUsers = $_POST['listUsers'];
-
-        // Get the ID of the user creating the list
-        if (!isset($_SESSION['user_id'])) {
-            // Handle the situation where user_id is not set in the session (you need to replace this with how you manage user authentication and session data)
-            // For example, if you use a different key for user_id in the session, replace 'user_id' with the correct key.
-            // You might also need to adjust how you retrieve the user_id depending on your authentication mechanism.
-            die('Error: User ID not found. Please handle user authentication and session data correctly.');
-        }
-        $userId = $_SESSION['user_id'];
-
-        // Insert the new list into the database
-        $sql = "INSERT INTO lists (name, created_by) VALUES (?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('si', $listName, $userId);
-        $stmt->execute();
-
-        // Get the ID of the newly inserted list
-        $listId = $conn->insert_id;
-
-        // Insert the participants into the database
-        $sql = "INSERT INTO participants (list_id, user_id) VALUES (?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ii', $listId, $participantId);
-
-        // Insert each selected participant into the database
-        foreach ($listUsers as $userEmail) {
-            $sql = "SELECT id FROM users WHERE email = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('s', $userEmail);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            $participantId = $row['id'];
-
-            // Insert the participant into the participants table
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ii', $listId, $participantId);
-            $stmt->execute();
-        }
-
-        // Redirect to the index page to see the updated list table
-        header("Location: index.php");
-        exit();
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -109,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a class="btn btn-primary btn-lg" href="SchdualingPage.php" role="button">Get Started</a>
     </div>
   </div>
-
 
   <h1 class="text-center stylish-header">Assignment Lists</h1>
 
@@ -171,37 +116,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<td><a href='SchdualingPage.php?listid=" . $row['id'] . "' class='btn btn-primary btn-view-list'>View List</a></td></tr>";
       }
       ?>
-      <?php
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-          // Get form values
-          include_once "./db.php";
-          $listName = $_POST["listName"];
-          $participants = $_POST["usersList"];
-          $created_at = date("Y-m-d H:i:s");
-      
-          // Validate form inputs
-          if (empty($listName)) {
-              $error = "Please enter a list name.";
-          } else {
-            // Insert the new list into the database
-            $sql = "INSERT INTO lists (name, created_at ,created_by) VALUES (?,?,?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssi', $listName, $created_at, $_SESSION['user_id']);
-            $stmt->execute();
-            $listId = $conn->insert_id;
-            $sql = "INSERT INTO participants (list_id, user_id) VALUES (?, ?)";
-            $stmt = $conn->prepare($sql);
-            foreach($participants as $participantId){
-              $stmt->bind_param('ii', $listId, $participantId);
-              $stmt->execute();
+      <!-- <?php
+        require_once "./db.php";
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Check if the form was submitted
+            if (isset($_POST['listName']) && isset($_POST['listUsers'])) {
+                // Get the list name and user emails from the form data
+                $listName = $_POST['listName'];
+                $listUsers = $_POST['listUsers'];
+                $date = date("")
+        
+                // Get the ID of the user creating the list
+                if (!isset($_SESSION['user_id'])) {
+                    // Handle the situation where user_id is not set in the session (you need to replace this with how you manage user authentication and session data)
+                    // For example, if you use a different key for user_id in the session, replace 'user_id' with the correct key.
+                    // You might also need to adjust how you retrieve the user_id depending on your authentication mechanism.
+                    die('Error: User ID not found. Please handle user authentication and session data correctly.');
+                }
+                $userId = $_SESSION['user_id'];
+        
+                // Insert the new list into the database
+                $sql = "INSERT INTO lists (name, created_by) VALUES (?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('si', $listName, $userId);
+                $stmt->execute();
+        
+                // Get the ID of the newly inserted list
+                $listId = $conn->insert_id;
+        
+                // Insert the participants into the database
+                $sqlInsert = "INSERT INTO participants (list_id, user_id) VALUES (?, ?)";
+                $stmtInsert = $conn->prepare($sqlInsert);
+        
+                // Insert each selected participant into the database
+                foreach ($listUsers as $userEmail) {
+                    $sqlSelect = "SELECT id FROM users WHERE email = ?";
+                    $stmtSelect = $conn->prepare($sqlSelect);
+                    $stmtSelect->bind_param('s', $userEmail);
+                    $stmtSelect->execute();
+                    $result = $stmtSelect->get_result();
+                    $row = $result->fetch_assoc();
+                    $participantId = $row['id'];
+        
+                    // Insert the participant into the participants table
+                    $stmtInsert->bind_param('ii', $listId, $participantId);
+                    $stmtInsert->execute();
+                }
+        
+                // Redirect to the index page to see the updated list table
+                header("Location: index.php");
+                exit();
             }
-            $stmt->bind_param('ii', $listId, $_SESSION['user_id']);
-            $stmt->execute();
-            echo "<script>window.location.href = 'SchdualingPage.php?listid=$listId';</script>";
-            exit();
-          }
         }
-        ?>
+        ?> -->
     </tbody>
   </table>
   <div class="text-center">
@@ -224,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">
               <label for="listName">List Name:</label>
-              <input type="text" class="form-control" id="listName">
+              <input type="text" class="form-control" id="listName" name="listName">
             </div>
             <div class="form-group">
               <label for="userSearch">Search for a user:</label>
@@ -234,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <label for="listUsers">Permitted Users:</label>
               <div id="userList" style="max-height: 220px; overflow-y: auto;">
                 <?php
-                $sql = "SELECT email, firstname, lastname FROM users WHERE email <> ?";
+                $sql = "SELECT id, firstname, lastname FROM users WHERE email <> ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $_SESSION['email']);
                 $stmt->execute();
@@ -243,22 +211,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($result->num_rows > 0) {
                   while ($row = $result->fetch_assoc()) {
                     $username = $row['firstname'] . " " . $row['lastname'];
-                    $user_email = $row['email'];
+                    $user_id = $row['id'];
                     echo '<div class="form-check">';
-                    echo '<input class="form-check-input" type="checkbox" name="listUsers[]" value="' . $user_email . '" id="user_' . $user_email . '">';
-                    echo '<label class="form-check-label">' . $username . " - " . $user_email .'</label>';
+                    echo '<input class="form-check-input" type="checkbox" name="usersList[]" value="' . $user_id . '" id="user_' . $user_id . '">';
+                    echo '<label class="form-check-label">' . $username . '</label>';
                     echo '</div>';
                   }
                 }
                 ?>
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create</button>
-          
         </div>
       </div>
     </div>

@@ -68,3 +68,6 @@ function createList() {
     alert("An error occurred while creating the list. Please try again.");
   });
 }
+
+// Attach the createList function to the "Create" button's click event
+document.getElementById("createButton").addEventListener("click", createList);
