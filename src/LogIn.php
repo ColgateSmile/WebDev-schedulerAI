@@ -15,12 +15,13 @@ $errorMsg = '';
 
 // If the form is submitted, process the login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once './db.php';
     // Retrieve the values from the form
     $email = $_POST['email'];
     $password = $_POST['password'];
+    echo $password;
     $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
-    require_once './db.php';
 
     // Prepare and execute the query
     $stmt = $conn->prepare('SELECT * FROM users WHERE email = ?');
@@ -52,14 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<script>window.location.href = 'index.php';</script>";
             exit;
         }
+       else {
+            // Invalid login, set error message
+            $errorMsg = 'Invalid password!';
+        } 
     }
-
-    // Invalid login, set error message
-    $errorMsg = 'Invalid email or password!';
-
-    // Close the database connection
-    $stmt->close();
-    $conn->close();
+    else {
+        // Invalid login, set error message
+        $errorMsg = 'Invalid email!';
+    }
 }
 ?>
 <?php
