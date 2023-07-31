@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the values from the form
     $email = $_POST['email'];
     $password = $_POST['password'];
-    echo $password;
     $rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'on';
 
 
